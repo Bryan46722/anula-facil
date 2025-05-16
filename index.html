@@ -1599,68 +1599,41 @@
         }
         
         /* Responsive Design */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            
-            .hero-subtitle {
-                font-size: 1.1rem;
-            }
-            
-            .consultation-container {
-                padding: 2rem;
-            }
-            
-            .analysis-title {
-                font-size: 2rem;
-            }
-            
-            .process-timeline::before {
-                left: 30px;
-            }
-            
-            .process-number {
-                left: 30px;
-                transform: translateY(-50%);
-            }
-            
-            .process-step:nth-child(even) .process-content,
-            .process-step:nth-child(odd) .process-content {
-                margin-left: 70px;
-                margin-right: 0;
-                text-align: left;
-            }
-            
-            .process-step:nth-child(even) .process-content::before,
-            .process-step:nth-child(odd) .process-content::before {
-                left: -10px;
-                right: auto;
-            }
-            
-            .process-icon {
-                left: -5px !important;
-                right: auto !important;
-            }
-            
-            .mobile-menu-toggle {
-                display: block;
-            }
-            
-            .nav-menu {
-                display: none;
-            }
-            
-            .hero-cta-container {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .hero-cta {
-                width: 100%;
-                max-width: 300px;
-            }
-        }
+       @media (max-width: 480px) {
+  .consultation-container {
+    padding: 1rem !important;
+    max-width: 99vw !important;
+    border-radius: 10px !important;
+  }
+  .consultation-container h1 {
+    font-size: 1.3rem !important;
+  }
+  .consultation-subtitle {
+    font-size: 1rem !important;
+  }
+  .plate-input {
+    font-size: 1rem !important;
+    padding: 1rem 0.7rem !important;
+    border-radius: 10px !important;
+  }
+  .analyze-btn {
+    font-size: 1rem !important;
+    padding: 1rem 1rem !important;
+  }
+  .plate-help-text {
+    font-size: 0.80rem !important;
+  }
+  .badge-container {
+    gap: 0.3rem !important;
+    flex-direction: column !important;
+  }
+  .consultation-screen {
+    align-items: flex-start !important;
+    padding-top: 1rem !important;
+    height: 100vh !important;
+  }
+}
+
         
         /* Loading overlay */
         .loading-overlay {
