@@ -1,6 +1,24 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+    <!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '580549265071414'); 
+fbq('track', 'PageView');
+</script>
+<noscript>
+<img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=580549265071414&ev=PageView&noscript=1"/>
+</noscript>
+<!-- End Meta Pixel Code -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anula Fácil - Sistema Oficial de Recursos</title>
@@ -2657,28 +2675,42 @@ function selectPlan(planType) {
     // Textos para cada plano
     let planName = '';
     let planPrice = '';
+    let planValue = 0;
     
     switch(planType) {
         case 'individual':
             planName = 'Plano Individual';
             planPrice = 'R$ 39,90';
+            planValue = 39.90;
             break;
         case 'intermediario':
             planName = 'Pacote Intermediário';
             planPrice = 'R$ 99,90';
+            planValue = 99.90;
             break;
         case 'premium':
             planName = 'Pacote Premium';
             planPrice = 'R$ 149,90';
+            planValue = 149.90;
             break;
         case 'executivo':
             planName = 'Pacote Executivo';
             planPrice = 'R$ 249,90';
+            planValue = 249.90;
             break;
     }
     
     // Verificar se o plano tem um link de checkout definido
     if (checkoutLinks[planType]) {
+        // Rastrear evento de início de checkout no Meta Pixel
+        fbq('track', 'InitiateCheckout', {
+            value: planValue,
+            currency: 'BRL',
+            content_name: planName,
+            content_type: 'product',
+            content_ids: [planType]
+        });
+        
         // Configurar a tela de transição
         document.getElementById('checkoutPlanName').textContent = planName + ' selecionado com sucesso!';
         document.getElementById('checkoutPlanPrice').textContent = 'Valor: ' + planPrice;
@@ -2695,7 +2727,7 @@ function selectPlan(planType) {
         // Redirecionar após 1.5 segundos
         setTimeout(() => {
             window.location.href = checkoutLinks[planType];
-        }, 2000);
+        }, 1500);
     }
 }
         
