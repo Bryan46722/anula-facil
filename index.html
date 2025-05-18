@@ -2647,38 +2647,54 @@
         function selectPlan(planType) {
     // Definir os links de checkout para cada plano
     const checkoutLinks = {
-        'individual': 'https://pay.cakto.com.br/3d2uy86_393003', // Link para o plano de R$39,90
+        'individual': 'https://pay.cakto.com.br/3d2uy86_393003',
         'intermediario': 'https://pay.cakto.com.br/o5hsbby_393096',
         'premium': 'https://pay.cakto.com.br/bc7fatr_393113',
         'executivo': 'https://pay.cakto.com.br/3ekt25j_393262',
     };
     
-    // Mensagens para cada plano
-    let message = '';
+    // Textos para cada plano
+    let planName = '';
+    let planPrice = '';
+    
     switch(planType) {
         case 'individual':
-            message = 'Você selecionou o Plano Individual (R$ 39,90)';
+            planName = 'Plano Individual';
+            planPrice = 'R$ 39,90';
             break;
         case 'intermediario':
-            message = 'Você selecionou o Pacote Intermediário (R$ 99,90)';
+            planName = 'Pacote Intermediário';
+            planPrice = 'R$ 99,90';
             break;
         case 'premium':
-            message = 'Você selecionou o Pacote Premium (R$ 149,90)';
+            planName = 'Pacote Premium';
+            planPrice = 'R$ 149,90';
             break;
         case 'executivo':
-            message = 'Você selecionou o Pacote Executivo (R$ 249,90)';
+            planName = 'Pacote Executivo';
+            planPrice = 'R$ 249,90';
             break;
     }
     
     // Verificar se o plano tem um link de checkout definido
     if (checkoutLinks[planType]) {
-        if (confirm(message + '\n\nRedirecionando para o checkout...')) {
-            // Redirecionar para o link de checkout correspondente
+        // Configurar a tela de transição
+        document.getElementById('checkoutPlanName').textContent = planName + ' selecionado com sucesso!';
+        document.getElementById('checkoutPlanPrice').textContent = 'Valor: ' + planPrice;
+        
+        // Mostrar a tela de transição com animação
+        const transitionScreen = document.getElementById('checkoutTransition');
+        transitionScreen.style.display = 'flex';
+        
+        // Pequeno delay para permitir que o DOM atualize antes da animação
+        setTimeout(() => {
+            transitionScreen.style.opacity = '1';
+        }, 10);
+        
+        // Redirecionar após 1.5 segundos
+        setTimeout(() => {
             window.location.href = checkoutLinks[planType];
-        }
-    } else {
-        // Caso o link ainda não esteja configurado
-        alert(message + '\n\nLink de checkout ainda não configurado para este plano.');
+        }, 1500);
     }
 }
         
@@ -2780,4 +2796,18 @@
         });
     </script>
 </body>
+<!-- Tela de transição para checkout -->
+<div id="checkoutTransition" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(26, 54, 93, 0.97); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; opacity: 0; transition: opacity 0.3s ease;">
+    <div style="text-align: center; max-width: 500px; padding: 30px;">
+        <div style="font-size: 40px; margin-bottom: 20px;">
+            <i class="fas fa-check-circle" style="color: #38a169;"></i>
+        </div>
+        <h2 style="font-size: 24px; margin-bottom: 15px; font-weight: 700;" id="checkoutPlanName">Plano selecionado com sucesso!</h2>
+        <p style="font-size: 16px; margin-bottom: 20px; opacity: 0.9;" id="checkoutPlanPrice"></p>
+        <div style="margin: 30px 0;">
+            <div class="loader" style="border: 4px solid rgba(255,255,255,0.3); border-top: 4px solid white; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto;"></div>
+            <p style="margin-top: 15px;">Redirecionando para o ambiente seguro de pagamento...</p>
+        </div>
+    </div>
+</div>
 </html>
