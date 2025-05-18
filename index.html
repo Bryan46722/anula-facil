@@ -2645,29 +2645,42 @@
         
         // Plan selection
         function selectPlan(planType) {
-            // Show alert with plan selection (in a real implementation, this would redirect to checkout)
-            let message = '';
-            switch(planType) {
+    // Definir os links de checkout para cada plano
+    const checkoutLinks = {
+        'individual': 'https://checkout.viperpay.com.br/NVHQrHdC', // Link para o plano de R$39,90
+        'intermediario': '', // Adicione o link do plano intermediário aqui quando tiver
+        'premium': '', // Adicione o link do plano premium aqui quando tiver
+        'executivo': '' // Adicione o link do plano executivo aqui quando tiver
+    };
+    
+    // Mensagens para cada plano
+    let message = '';
+    switch(planType) {
         case 'individual':
-            url = "https://checkout.viperpay.com.br/NVHQrHdC";
-                    break;
-                case 'intermediario':
-                    message = 'Você selecionou o Pacote Intermediário (R$ 99,90)';
-                    break;
-                case 'premium':
-                    message = 'Você selecionou o Pacote Premium (R$ 149,90)';
-                    break;
-                case 'executivo':
-                    message = 'Você selecionou o Pacote Executivo (R$ 249,90)';
-                    break;
-            }
-            
-            if (confirm(message + '\n\nRedirecionando para o checkout...')) {
-                // In a real implementation, redirect to payment gateway
-                // window.location.href = '/checkout?plan=' + planType;
-                alert('Implementar integração com gateway de pagamento (PagSeguro, Mercado Pago, etc.)');
-            }
+            message = 'Você selecionou o Plano Individual (R$ 39,90)';
+            break;
+        case 'intermediario':
+            message = 'Você selecionou o Pacote Intermediário (R$ 99,90)';
+            break;
+        case 'premium':
+            message = 'Você selecionou o Pacote Premium (R$ 149,90)';
+            break;
+        case 'executivo':
+            message = 'Você selecionou o Pacote Executivo (R$ 249,90)';
+            break;
+    }
+    
+    // Verificar se o plano tem um link de checkout definido
+    if (checkoutLinks[planType]) {
+        if (confirm(message + '\n\nRedirecionando para o checkout...')) {
+            // Redirecionar para o link de checkout correspondente
+            window.location.href = checkoutLinks[planType];
         }
+    } else {
+        // Caso o link ainda não esteja configurado
+        alert(message + '\n\nLink de checkout ainda não configurado para este plano.');
+    }
+}
         
         // Smooth scroll functions
         function scrollToPlans() {
