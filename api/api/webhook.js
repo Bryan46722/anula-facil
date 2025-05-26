@@ -1,8 +1,7 @@
 import { MercadoPagoConfig, Payment } from 'mercadopago';
-import crypto from 'crypto';
 
 const client = new MercadoPagoConfig({
-    accessToken: process.env.MP_ACCESS_TOKEN
+    accessToken: 'APP_USR-7586214711012079-052523-5bad69684c25c61942721988b9ce9bf6-510034420'
 });
 
 const payment = new Payment(client);
@@ -21,97 +20,80 @@ export default async function handler(req, res) {
     }
 
     try {
-        // Verificar assinatura do webhook (segurança)
-        const signature = req.headers['x-signature'];
-        const requestId = req.headers['x-request-id'];
-        
-        if (process.env.MP_WEBHOOK_SECRET && signature) {
-            const elements = signature.split(',');
-            
-            let ts;
-            let hash;
-            
-            elements.forEach(element => {
-                const keyValue = element.split('=');
-                if (keyValue[0] && keyValue[0].trim() === 'ts') {
-                    ts = keyValue[1].trim();
-                }
-                if (keyValue[0] && keyValue[0].trim() === 'v1') {
-                    hash = keyValue[1].trim();
-                }
-            });
-            
-            const secret = process.env.MP_WEBHOOK_SECRET;
-            const manifest = `id:${req.body.data?.id};request-id:${requestId};ts:${ts};`;
-            
-            const hmac = crypto.createHmac('sha256', secret);
-            hmac.update(manifest);
-            const sha = hmac.digest('hex');
-            
-            if (sha !== hash) {
-                console.log('❌ Assinatura do webhook inválida');
-                return res.status(400).json({ error: 'Assinatura inválida' });
-            }
-        }
-
         console.log('🔔 Webhook recebido:', JSON.stringify(req.body, null, 2));
         console.log('📋 Headers:', JSON.stringify(req.headers, null, 2));
 
         const { type, data, action } = req.body;
 
+        // Verificar se é notificação de pagamento
         if (type === 'payment' || action === 'payment.updated') {
-            const paymentId = data.id;
+            const paymentId = data?.id;
+            
+            if (!paymentId) {
+                console.log('❌ ID do pagamento não encontrado');
+                return res.status(400).json({ error: 'ID do pagamento não encontrado' });
+            }
             
             console.log(`🔍 Consultando pagamento ID: ${paymentId}`);
             
-            const paymentInfo = await payment.get({ id: paymentId });
-            
-            console.log('📊 Status do pagamento:', {
-                id: paymentInfo.id,
-                status: paymentInfo.status,
-                status_detail: paymentInfo.status_detail,
-                external_reference: paymentInfo.external_reference,
-                transaction_amount: paymentInfo.transaction_amount,
-                payment_method_id: paymentInfo.payment_method_id,
-                payer_email: paymentInfo.payer.email
-            });
+            try {
+                const paymentInfo = await payment.get({ id: paymentId });
+                
+                console.log('📊 Status do pagamento:', {
+                    id: paymentInfo.id,
+                    status: paymentInfo.status,
+                    status_detail: paymentInfo.status_detail,
+                    external_reference: paymentInfo.external_reference,
+                    transaction_amount: paymentInfo.transaction_amount,
+                    payment_method_id: paymentInfo.payment_method_id,
+                    payer_email: paymentInfo.payer?.email
+                });
 
-            switch (paymentInfo.status) {
-                case 'approved':
-                    console.log('✅ Pagamento aprovado! Ativando serviços...');
-                    await processApprovedPayment(paymentInfo);
-                    break;
-                    
-                case 'pending':
-                    console.log('⏳ Pagamento pendente...');
-                    await processPendingPayment(paymentInfo);
-                    break;
-                    
-                case 'in_process':
-                    console.log('🔄 Pagamento em processamento...');
-                    break;
-                    
-                case 'rejected':
-                    console.log('❌ Pagamento rejeitado...');
-                    await processRejectedPayment(paymentInfo);
-                    break;
-                    
-                case 'cancelled':
-                    console.log('🚫 Pagamento cancelado...');
-                    break;
-                    
-                default:
-                    console.log(`❓ Status desconhecido: ${paymentInfo.status}`);
+                switch (paymentInfo.status) {
+                    case 'approved':
+                        console.log('✅ Pagamento aprovado! Ativando serviços...');
+                        await processApprovedPayment(paymentInfo);
+                        break;
+                        
+                    case 'pending':
+                        console.log('⏳ Pagamento pendente...');
+                        await processPendingPayment(paymentInfo);
+                        break;
+                        
+                    case 'in_process':
+                        console.log('🔄 Pagamento em processamento...');
+                        break;
+                        
+                    case 'rejected':
+                        console.log('❌ Pagamento rejeitado...');
+                        await processRejectedPayment(paymentInfo);
+                        break;
+                        
+                    case 'cancelled':
+                        console.log('🚫 Pagamento cancelado...');
+                        break;
+                        
+                    default:
+                        console.log(`❓ Status desconhecido: ${paymentInfo.status}`);
+                }
+                
+            } catch (paymentError) {
+                console.error('❌ Erro ao buscar pagamento:', paymentError);
+                return res.status(500).json({ 
+                    error: 'Erro ao consultar pagamento',
+                    received: true 
+                });
             }
+            
         } else {
             console.log(`ℹ️ Tipo de notificação não processada: ${type || action}`);
         }
 
-        res.status(200).json({ received: true });
+        return res.status(200).json({ received: true });
 
     } catch (error) {
         console.error('💥 Erro no webhook:', error);
-        res.status(200).json({ 
+        return res.status(200).json({ 
             error: 'Erro interno', 
             received: true 
         });
@@ -122,8 +104,8 @@ async function processApprovedPayment(paymentInfo) {
     try {
         console.log('🎉 Processando pagamento aprovado...');
         
-        const customerEmail = paymentInfo.payer.email;
-        const planType = paymentInfo.metadata?.plan_type;
+        const customerEmail = paymentInfo.payer?.email;
+        const planType = paymentInfo.external_reference?.split('_')[2] || 'individual';
         const amount = paymentInfo.transaction_amount;
         const externalRef = paymentInfo.external_reference;
         
@@ -131,12 +113,6 @@ async function processApprovedPayment(paymentInfo) {
         console.log(`📦 Plano: ${planType}`);
         console.log(`💰 Valor: R$ ${amount}`);
         console.log(`🔗 Referência: ${externalRef}`);
-        
-        // AQUI VOCÊ PODE IMPLEMENTAR:
-        // 1. Enviar email de confirmação
-        // 2. Ativar acesso ao sistema
-        // 3. Salvar no banco de dados
-        // 4. Enviar WhatsApp
         
         const activationData = {
             payment_id: paymentInfo.id,
@@ -164,7 +140,7 @@ async function processPendingPayment(paymentInfo) {
     try {
         console.log('⏳ Processando pagamento pendente...');
         
-        const customerEmail = paymentInfo.payer.email;
+        const customerEmail = paymentInfo.payer?.email;
         const paymentMethod = paymentInfo.payment_method_id;
         
         if (paymentMethod === 'pix') {
@@ -182,7 +158,7 @@ async function processRejectedPayment(paymentInfo) {
     try {
         console.log('❌ Processando pagamento rejeitado...');
         
-        const customerEmail = paymentInfo.payer.email;
+        const customerEmail = paymentInfo.payer?.email;
         const statusDetail = paymentInfo.status_detail;
         
         console.log(`📧 Cliente: ${customerEmail}`);
