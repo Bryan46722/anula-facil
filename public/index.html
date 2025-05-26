@@ -1,0 +1,2844 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '580549265071414'); 
+fbq('track', 'PageView');
+</script>
+<noscript>
+<img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=580549265071414&ev=PageView&noscript=1"/>
+</noscript>
+<!-- End Meta Pixel Code -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anula Fácil - Sistema Oficial de Recursos</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: #1a202c;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        
+        /* Initial Consultation Screen */
+        .consultation-screen {
+            height: 100vh;
+            background: linear-gradient(135deg, #1a365d 0%, #2d5aa0 50%, #319795 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .consultation-screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="hexagons" x="0" y="0" width="50" height="43.4" patternUnits="userSpaceOnUse"><polygon fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1" points="24.8,0 49.6,14.3 49.6,42.9 24.8,57.2 0,42.9 0,14.3"/></pattern></defs><rect width="100%" height="100%" fill="url(%23hexagons)"/></svg>') center;
+            background-size: 400px 400px;
+            animation: movePattern 20s ease-in-out infinite;
+        }
+        
+        @keyframes movePattern {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-50px, -50px); }
+        }
+        
+        .consultation-container {
+            background: white;
+            padding: 4rem;
+            border-radius: 25px;
+            box-shadow: 
+                0 25px 50px rgba(0,0,0,0.25),
+                0 0 0 1px rgba(255,255,255,0.1),
+                inset 0 1px 0 rgba(255,255,255,0.6);
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(10px);
+        }
+        
+        .badge-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .trust-badge {
+            background: linear-gradient(135deg, #e6fffa 0%, #81e6d9 100%);
+            color: #2d5aa0;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 1px solid rgba(45, 90, 160, 0.2);
+        }
+        
+        .consultation-container h1 {
+            color: #1a365d;
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1a365d 0%, #2d5aa0 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .consultation-subtitle {
+            color: #4a5568;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        
+        .consultation-container p {
+            color: #718096;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        
+        .plate-input-container {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+        
+        .plate-input {
+            width: 100%;
+            padding: 1.2rem 1.5rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            font-size: 1.5rem;
+            text-align: center;
+            text-transform: uppercase;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            background: #f7fafc;
+            letter-spacing: 0.1em;
+        }
+        
+        .plate-input:focus {
+            outline: none;
+            border-color: #2d5aa0;
+            box-shadow: 
+                0 0 0 3px rgba(45, 90, 160, 0.1),
+                0 10px 25px rgba(45, 90, 160, 0.15);
+            background: white;
+            transform: translateY(-2px);
+        }
+        
+        .plate-help-text {
+            font-size: 0.9rem;
+            color: #718096;
+            margin-top: 0.5rem;
+        }
+        
+        .analyze-btn {
+            background: linear-gradient(135deg, #1a365d 0%, #2d5aa0 100%);
+            color: white;
+            border: none;
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .analyze-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .analyze-btn:hover::before {
+            left: 100%;
+        }
+        
+        .analyze-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(45, 90, 160, 0.4);
+            background: linear-gradient(135deg, #153e75 0%, #2a4d94 100%);
+        }
+        
+        .analyze-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .security-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 1.5rem;
+            color: #4a5568;
+            font-size: 0.9rem;
+        }
+        
+        .security-info i {
+            margin-right: 0.5rem;
+            color: #38a169;
+        }
+        
+        /* Analysis Screen */
+        .analysis-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a365d 0%, #2d5aa0 50%, #319795 100%);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+        
+        .analysis-content {
+            text-align: center;
+            max-width: 600px;
+            padding: 2rem;
+        }
+        
+        .gov-logo {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: rgba(255,255,255,0.9);
+        }
+        
+        .analysis-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 800;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards;
+        }
+        
+        .analysis-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 3rem;
+        }
+        
+        .analysis-steps {
+            list-style: none;
+        }
+        
+        .analysis-step {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            background: rgba(255,255,255,0.1);
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .analysis-step.active {
+            animation: stepAnimation 2s ease forwards;
+        }
+        
+        .analysis-step i {
+            margin-right: 1rem;
+            font-size: 1.5rem;
+            width: 2rem;
+        }
+        
+        .analysis-step.active i {
+            color: #68d391;
+            animation: pulse 1s ease infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .loading-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+            margin-top: 3rem;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .loading-progress {
+            height: 100%;
+            background: linear-gradient(90deg, #68d391, #4fd1c5, #68d391);
+            width: 0%;
+            border-radius: 3px;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+        
+        .loading-progress::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes stepAnimation {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        /* Landing Page Styles */
+        .landing-page {
+            display: none;
+        }
+        
+        /* Navigation Bar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(26, 54, 93, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar.hidden {
+            transform: translateY(-100%);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+        
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-menu a:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .nav-cta {
+            background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
+            color: white !important;
+            padding: 0.75rem 1.5rem !important;
+            border-radius: 25px !important;
+            font-weight: 700;
+        }
+        
+        .nav-cta:hover {
+            background: linear-gradient(135deg, #dd3333 0%, #b02c2c 100%) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(229, 62, 62, 0.4);
+        }
+        
+        /* Hero with Alert Bar */
+        .alert-bar {
+            background: linear-gradient(90deg, #e53e3e 0%, #c53030 100%);
+            color: white;
+            padding: 1rem 0;
+            text-align: center;
+            font-weight: 600;
+            animation: pulse-background 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-background {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.9; }
+        }
+        
+        .countdown-inline {
+            display: inline-block;
+            margin: 0 0.5rem;
+            font-weight: 800;
+            color: #ffd700;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, #1a365d 0%, #2d5aa0 50%, #319795 100%);
+            color: white;
+            padding: 8rem 0 6rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            margin-top: 70px;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 2px, transparent 2px);
+            background-size: 80px 80px;
+            animation: moveBackground 30s linear infinite;
+        }
+        
+        @keyframes moveBackground {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(80px, 80px); }
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero-badge {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.3);
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 900;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            line-height: 1.2;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            opacity: 0.95;
+            font-weight: 500;
+        }
+        
+        .hero p {
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+        }
+        
+        .hero-cta-container {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .hero-cta {
+            background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
+            color: white;
+            padding: 1.2rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .hero-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .hero-cta:hover::before {
+            left: 100%;
+        }
+        
+        .hero-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(229, 62, 62, 0.4);
+            background: linear-gradient(135deg, #dd3333 0%, #b02c2c 100%);
+        }
+        
+        .hero-cta-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+        
+        .hero-cta-secondary:hover {
+            background: white;
+            color: #1a365d;
+        }
+        
+        /* Urgent Notice */
+        .urgent-notice {
+            background: linear-gradient(135deg, #fef5e0 0%, #fde68a 100%);
+            border: 2px solid #f59e0b;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 2rem auto;
+            max-width: 800px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .urgent-notice::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.1), transparent);
+            transition: left 2s;
+            animation: urgent-shine 3s ease-in-out infinite;
+        }
+        
+        @keyframes urgent-shine {
+            0% { left: -100%; }
+            50% { left: 100%; }
+            100% { left: -100%; }
+        }
+        
+        .urgent-notice h3 {
+            color: #92400e;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .urgent-notice p {
+            color: #92400e;
+            font-weight: 500;
+        }
+        
+        /* Government Credentials */
+        .gov-credentials {
+            background: white;
+            padding: 3rem 0;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .credentials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+        
+        .credential-item {
+            padding: 1rem;
+        }
+        
+        .credential-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #1a365d 0%, #2d5aa0 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .credential-text {
+            font-size: 0.9rem;
+            color: #4a5568;
+            font-weight: 600;
+        }
+        
+        /* Stats Section */
+        .stats {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            padding: 5rem 0;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 
+                0 10px 25px rgba(0,0,0,0.08),
+                0 0 0 1px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .stat-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: white;
+            font-size: 2rem;
+            position: relative;
+        }
+        
+.stat-icon {
+    /* Manter código existente e ADICIONAR: */
+    transition: transform 0.3s ease;
+}
+
+.stat-icon:hover {
+    transform: scale(1.1);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+}
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #1a365d;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #1a365d 0%, #2d5aa0 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .stat-label {
+            color: #4a5568;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .stat-description {
+            color: #718096;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            line-height: 1.6;
+        }
+        
+        /* How It Works */
+        .how-it-works {
+            padding: 6rem 0;
+            background: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            color: #1a365d;
+            margin-bottom: 1rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #1a365d 0%, #2d5aa0 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            color: #4a5568;
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+        }
+        
+        .process-timeline {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .process-timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+            transform: translateX(-50%);
+        }
+        
+        .process-step {
+            position: relative;
+            margin-bottom: 4rem;
+        }
+        
+        .process-step:nth-child(even) .process-content {
+            margin-left: 60%;
+            text-align: left;
+        }
+        
+        .process-step:nth-child(odd) .process-content {
+            margin-right: 60%;
+            text-align: right;
+        }
+        
+        .process-number {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 800;
+            z-index: 2;
+            box-shadow: 0 0 0 10px white, 0 0 0 15px rgba(102, 126, 234, 0.2);
+        }
+        
+        .process-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .process-content::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 20px;
+            height: 20px;
+            background: white;
+            transform: translateY(-50%) rotate(45deg);
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .process-step:nth-child(even) .process-content::before {
+            left: -10px;
+        }
+        
+        .process-step:nth-child(odd) .process-content::before {
+            right: -10px;
+        }
+        
+        .process-content h3 {
+            color: #1a365d;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .process-content p {
+            color: #4a5568;
+            line-height: 1.7;
+        }
+        
+        .process-icon {
+            position: absolute;
+            top: -15px;
+            padding: 0.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            color: white;
+            font-size: 1.2rem;
+        }
+        
+        .process-step:nth-child(even) .process-icon {
+            left: 1rem;
+        }
+        
+        .process-step:nth-child(odd) .process-icon {
+            right: 1rem;
+        }
+        
+        /* Legal Basis */
+        .legal-basis {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            padding: 5rem 0;
+        }
+        
+        .legal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .legal-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            border-left: 5px solid #2d5aa0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+        }
+        
+        .legal-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .legal-card h3 {
+            color: #1a365d;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .legal-card p {
+            color: #4a5568;
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+        
+        .legal-reference {
+            background: #edf2f7;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #2d5aa0;
+            font-weight: 600;
+        }
+        
+        /* Plans Section */
+        .plans {
+            padding: 6rem 0;
+            background: linear-gradient(135deg, #1a365d 0%, #2d5aa0 50%, #319795 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .plans::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><path fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1" d="M 20 0 L 0 0 0 20"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>') center;
+            background-size: 100px 100px;
+        }
+        
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .plan-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            color: #1a202c;
+        }
+        
+        .plan-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+        
+        .plan-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+        }
+        
+        .plan-popular {
+            border: 3px solid #ffd700;
+            transform: scale(1.05);
+            position: relative;
+        }
+        
+        .popular-badge {
+            position: absolute;
+            top: 20px;
+            right: -35px;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #1a365d;
+            padding: 8px 45px;
+            transform: rotate(45deg);
+            font-size: 0.9rem;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+        
+        .plan-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: white;
+            font-size: 2rem;
+            position: relative;
+        }
+        
+        .plan-icon::after {
+            content: '';
+            position: absolute;
+            inset: -5px;
+            background: linear-gradient(45deg, #667eea, #764ba2, #667eea);
+            border-radius: 50%;
+            z-index: -1;
+            animation: rotate 6s linear infinite;
+        }
+        
+        .plan-name {
+            font-size: 1.5rem;
+            color: #1a365d;
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+        
+        .plan-price {
+            font-size: 3rem;
+            color: #667eea;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        
+        .plan-price span {
+            font-size: 1rem;
+            color: #4a5568;
+            vertical-align: super;
+        }
+        
+        .plan-price-original {
+            position: absolute;
+            top: -10px;
+            right: 0;
+            font-size: 1rem;
+            color: #718096;
+            text-decoration: line-through;
+        }
+        
+        .plan-discount {
+            background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            position: absolute;
+            top: -10px;
+            left: 0;
+        }
+        
+        .plan-description {
+            color: #4a5568;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        
+        .plan-features {
+            list-style: none;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+        
+        .plan-features li {
+            padding: 0.75rem 0;
+            color: #2d3748;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #f7fafc;
+        }
+        
+        .plan-features li:last-child {
+            border-bottom: none;
+        }
+        
+        .plan-features i {
+            color: #38a169;
+            margin-right: 1rem;
+            font-size: 1.1rem;
+            min-width: 20px;
+        }
+        
+        .feature-highlight {
+            background: #f7fafc;
+            margin: 0 -1rem;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+        }
+        
+        .plan-cta {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .plan-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .plan-cta:hover::before {
+            left: 100%;
+        }
+        
+        .plan-cta:hover {
+            background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(90, 103, 216, 0.4);
+        }
+        
+        .plan-popular .plan-cta {
+            background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
+        }
+        
+        .plan-popular .plan-cta:hover {
+            background: linear-gradient(135deg, #dd3333 0%, #b02c2c 100%);
+        }
+        
+        .plan-guarantee {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #4a5568;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .plan-guarantee i {
+            margin-right: 0.5rem;
+            color: #38a169;
+        }
+        
+        /* Testimonials Enhanced */
+        .testimonials {
+            padding: 6rem 0;
+            background: white;
+        }
+        
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .testimonial-card {
+            background: #f7fafc;
+            padding: 2.5rem;
+            border-radius: 20px;
+            position: relative;
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            font-size: 4rem;
+            color: #667eea;
+            font-weight: 900;
+            line-height: 1;
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            color: #2d3748;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .author-avatar {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            margin-right: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            font-size: 1.5rem;
+        }
+        
+        .author-info h4 {
+            color: #1a365d;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        
+        .author-info p {
+            color: #4a5568;
+            font-size: 0.9rem;
+        }
+        
+        .testimonial-rating {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            color: #ffd700;
+            font-size: 1.2rem;
+        }
+        
+        .testimonial-verified {
+            color: #38a169;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .testimonial-verified i {
+            margin-right: 0.25rem;
+        }
+        
+        /* FAQ Enhanced */
+        .faq {
+            padding: 6rem 0;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+        }
+        
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            margin-bottom: 1.5rem;
+            border-radius: 15px;
+            overflow: hidden;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .faq-item:hover {
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .faq-question {
+            background: white;
+            padding: 1.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: #1a365d;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-question:hover {
+            background: #f7fafc;
+        }
+        
+        .faq-question i {
+            transition: transform 0.3s ease;
+        }
+        
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+        
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            background: #f7fafc;
+            color: #4a5568;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-answer.show {
+            max-height: 500px;
+            padding: 1.5rem;
+        }
+        
+        .faq-answer p {
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+        
+        .faq-answer p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .faq-answer ul {
+            padding-left: 1.5rem;
+            color: #2d3748;
+        }
+        
+        .faq-answer li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Guarantees */
+        .guarantees {
+            padding: 5rem 0;
+            background: white;
+        }
+        
+        .guarantees-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .guarantee-card {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+        
+        .guarantee-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .guarantee-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #38a169 0%, #2f855a 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+            font-size: 2rem;
+        }
+        
+        .guarantee-card h3 {
+            color: #1a365d;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .guarantee-card p {
+            color: #4a5568;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        /* Contact Section */
+        .contact {
+            padding: 5rem 0;
+            background: linear-gradient(135deg, #1a365d 0%, #2d5aa0 50%, #319795 100%);
+            color: white;
+        }
+        
+        .contact-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            align-items: center;
+        }
+        
+        .contact-info h3 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+        
+        .contact-info p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            line-height: 1.7;
+        }
+        
+        .contact-methods {
+            list-style: none;
+        }
+        
+        .contact-methods li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .contact-methods i {
+            margin-right: 1rem;
+            font-size: 1.3rem;
+            width: 2rem;
+        }
+        
+        .contact-cta {
+            text-align: center;
+        }
+        
+        .urgent-cta {
+            background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
+            color: white;
+            padding: 1.5rem 3rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .urgent-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .urgent-cta:hover::before {
+            left: 100%;
+        }
+        
+        .urgent-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(229, 62, 62, 0.4);
+            background: linear-gradient(135deg, #dd3333 0%, #b02c2c 100%);
+        }
+        
+        .contact-note {
+            margin-top: 1rem;
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+        
+        /* Footer Enhanced */
+        .footer {
+            background: #1a202c;
+            color: white;
+            padding: 4rem 0 2rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section h4 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #e2e8f0;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-section a {
+            color: #a0aec0;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid #2d3748;
+            padding-top: 2rem;
+            text-align: center;
+        }
+        
+        .footer-certifications {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .cert-badge {
+            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        .final-message {
+            font-size: 1.1rem;
+            font-style: italic;
+            opacity: 0.9;
+            color: #a0aec0;
+        }
+        
+        /* Mobile Menu */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .mobile-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #1a365d;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .mobile-menu a {
+            display: block;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        /* Floating Action Button */
+        .floating-cta {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
+            color: white;
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(229, 62, 62, 0.4);
+            transition: all 0.3s ease;
+            z-index: 50;
+        }
+        
+        .floating-cta:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(229, 62, 62, 0.6);
+        }
+        
+        /* Animations */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+        
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .consultation-container {
+                padding: 2rem;
+            }
+            
+            .analysis-title {
+                font-size: 2rem;
+            }
+            
+            .process-timeline::before {
+                left: 30px;
+            }
+            
+            .process-number {
+                left: 30px;
+                transform: translateY(-50%);
+            }
+            
+            .process-step:nth-child(even) .process-content,
+            .process-step:nth-child(odd) .process-content {
+                margin-left: 70px;
+                margin-right: 0;
+                text-align: left;
+            }
+            
+            .process-step:nth-child(even) .process-content::before,
+            .process-step:nth-child(odd) .process-content::before {
+                left: -10px;
+                right: auto;
+            }
+            
+            .process-icon {
+                left: -5px !important;
+                right: auto !important;
+            }
+            
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            .nav-menu {
+                display: none;
+            }
+            
+            .hero-cta-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .hero-cta {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+        
+        /* Loading overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a365d 0%, #2d5aa0 100%);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+        
+        .loading-content {
+            text-align: center;
+            color: white;
+        }
+        
+        .loader {
+            border: 4px solid rgba(255,255,255,0.2);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        #planos .section-title {
+  color: #fff !important;
+  background: none !important;
+  background-clip: unset !important;
+  -webkit-background-clip: unset !important;
+  -webkit-text-fill-color: unset !important;
+  text-shadow: 0 2px 10px rgba(26,54,93,0.10);
+  opacity: 1 !important;
+}
+#planos .section-subtitle {
+  color: #fff !important;
+  opacity: 1 !important;
+}
+
+
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="loader"></div>
+            <h3>Carregando Sistema de Recursos...</h3>
+        </div>
+    </div>
+
+    <!-- Initial Consultation Screen -->
+    <div class="consultation-screen" id="consultationScreen">
+        <div class="consultation-container">
+            <div class="badge-container">
+                <div class="trust-badge">
+                    <i class="fas fa-shield-check"></i> 100% Seguro
+                </div>
+                <div class="trust-badge">
+                    <i class="fas fa-clock"></i> Resultado em 24h
+                </div>
+            </div>
+            
+            <h1><i class="fas fa-gavel"></i> Sistema Jurídico de Recursos</h1>
+            <h2 class="consultation-subtitle">Sistema Administrativo de Multas de Trânsito</h2>
+            <p>Digite a placa do seu veículo para verificarmos suas multas passíveis de recurso legal. Nossa base de dados é conectada diretamente com os sistemas do DETRAN.</p>
+            
+            <div class="plate-input-container">
+                <input 
+                    type="text" 
+                    class="plate-input" 
+                    id="plateInput" 
+                    placeholder="ABC-1234" 
+                    maxlength="8"
+                >
+                <p class="plate-help-text">Formato: ABC-1234 ou ABC1234</p>
+            </div>
+            
+            <button class="analyze-btn" onclick="startAnalysis()">
+                <i class="fas fa-search"></i> Iniciar Análise Jurídica
+            </button>
+            
+            <div class="security-info">
+                <i class="fas fa-lock"></i>
+                Seus dados são criptografados e protegidos (SSL/TLS)
+            </div>
+        </div>
+    </div>
+
+    <!-- Analysis Screen -->
+    <div class="analysis-screen" id="analysisScreen">
+        <div class="analysis-content">
+            <div class="gov-logo">
+                <i class="fas fa-balance-scale"></i>
+            </div>
+            <h1 class="analysis-title">Análise em Andamento</h1>
+            <p class="analysis-subtitle">Sistema integrado com bases do DETRAN</p>
+            
+            <ul class="analysis-steps">
+                <li class="analysis-step" id="step1">
+                    <i class="fas fa-database"></i>
+                    <span>Analisando seu histórico no sistema do DETRAN...</span>
+                </li>
+                <li class="analysis-step" id="step2">
+                    <i class="fas fa-gavel"></i>
+                    <span>Verificando prazos legais para recurso...</span>
+                </li>
+                <li class="analysis-step" id="step3">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Encontramos multas ainda passíveis de recurso!</span>
+                </li>
+            </ul>
+            
+            <div class="loading-bar">
+                <div class="loading-progress" id="loadingProgress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Landing Page -->
+    <div class="landing-page" id="landingPage">
+        <!-- Navigation -->
+        <nav class="navbar" id="navbar">
+            <div class="nav-container">
+<a href="#" class="nav-logo" style="display: flex; align-items: center;">
+    <img src="img/anulafacil-logo.png" alt="Anula Fácil" style="height: 120px; margin-right: 12px;">
+</a>
+
+
+
+
+
+                <ul class="nav-menu">
+                    <li><a href="#como-funciona">Como Funciona</a></li>
+                    <li><a href="#legalidade">Embasamento Legal</a></li>
+                    <li><a href="#planos">Planos</a></li>
+                    <li><a href="#depoimentos">Depoimentos</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="#contato" class="nav-cta">Iniciar Agora</a></li>
+                </ul>
+                <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="mobile-menu" id="mobileMenu">
+                    <a href="#como-funciona">Como Funciona</a>
+                    <a href="#legalidade">Embasamento Legal</a>
+                    <a href="#planos">Planos</a>
+                    <a href="#depoimentos">Depoimentos</a>
+                    <a href="#faq">FAQ</a>
+                    <a href="#contato">Contato</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Alert Bar -->
+        <div class="alert-bar">
+            <i class="fas fa-exclamation-triangle"></i>
+            <strong>ATENÇÃO:</strong> Você tem apenas 
+            <span class="countdown-inline" id="daysLeft">03</span> dias para recorrer!
+            Prazo se esgota em: 
+            <span class="countdown-inline" id="timeLeft">72h 15m</span>
+        </div>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+<div class="hero-badge">
+    <i class="fas fa-award"></i> Sistema de Recursos Profissional
+</div>
+                
+                <h1>Seus Recursos de Multas Aprovados com 90% de Êxito</h1>
+                <h2 class="hero-subtitle">Sistema Oficial de Recursos Administrativos</h2>
+                <p>Profissionais especializados em Direito de Trânsito elaboram seu recurso com embasamento jurídico completo, dentro do prazo legal. Mais de 3.000 motoristas já recuperaram seus pontos na CNH através do nosso sistema.</p>
+                
+                <div class="hero-cta-container">
+                    <button class="hero-cta" onclick="scrollToPlans()">
+                        <i class="fas fa-rocket"></i>
+                        Recuperar Meus Pontos Agora
+                    </button>
+                    <button class="hero-cta hero-cta-secondary" onclick="scrollToHowItWorks()">
+                        <i class="fas fa-play"></i>
+                        Ver Como Funciona
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Urgent Notice -->
+        <div class="container">
+            <div class="urgent-notice">
+                <h3><i class="fas fa-clock"></i> Prazo Crítico Identificado</h3>
+                <p>Nossa análise identificou que você possui multas com prazo de apenas 3 dias úteis para recurso. Após este prazo, não será mais possível contestar legalmente.</p>
+            </div>
+        </div>
+
+        <!-- Government Credentials -->
+        <section class="gov-credentials">
+    <div class="container">
+        <div class="credentials-grid">
+            <div class="credential-item">
+                <div class="credential-icon">
+                    <i class="fas fa-check-double"></i>
+                </div>
+                <p class="credential-text">100% Legal & Seguro</p>
+            </div>
+            <div class="credential-item">
+                <div class="credential-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <p class="credential-text">Dados Criptografados</p>
+            </div>
+            <div class="credential-item">
+                <div class="credential-icon">
+                    <i class="fas fa-id-badge"></i>
+                </div>
+                <p class="credential-text">DETRAN Autorizado</p>
+            </div>
+            <div class="credential-item">
+                <div class="credential-icon">
+                    <i class="fas fa-award"></i>
+                </div>
+                <p class="credential-text">ISO 27001</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+        <!-- Stats Section -->
+        <section class="stats">
+            <div class="container">
+                <div class="stats-grid">
+                    <div class="stat-card fade-in-up">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-number">3.247+</div>
+                        <div class="stat-label">Motoristas Atendidos</div>
+                        <p class="stat-description">Em todo território nacional desde 2018</p>
+                    </div>
+                    <div class="stat-card fade-in-up">
+                        <div class="stat-icon">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <div class="stat-number">90%</div>
+                        <div class="stat-label">Taxa de Sucesso</div>
+                        <p class="stat-description">Recursos aprovados pelos órgãos competentes</p>
+                    </div>
+                    <div class="stat-card fade-in-up">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-number">18h</div>
+                        <div class="stat-label">Tempo Médio</div>
+                        <p class="stat-description">Para elaboração e entrega do recurso</p>
+                    </div>
+                    <div class="stat-card fade-in-up">
+                        <div class="stat-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="stat-number">R$ 2.8M</div>
+                        <div class="stat-label">Em Multas Anuladas</div>
+                        <p class="stat-description">Valor total economizado pelos nossos clientes</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works -->
+        <section class="how-it-works" id="como-funciona">
+            <div class="container">
+                <h2 class="section-title fade-in-up">Como Funciona Nosso Sistema</h2>
+                <p class="section-subtitle fade-in-up">Processo 100% digital e juridicamente fundamentado</p>
+                
+                <div class="process-timeline">
+                    <div class="process-step fade-in-up">
+                        <div class="process-number">1</div>
+                        <div class="process-content">
+                            <div class="process-icon">
+                                <i class="fas fa-upload"></i>
+                            </div>
+                            <h3>Identificação Automática das Infrações</h3>
+                            <p>Nosso sistema faz uma varredura completa e automática usando apenas a placa do seu veículo. Você não precisa enviar fotos, documentos ou dados adicionais: identificamos todas as multas elegíveis para recurso de forma instantânea e segura, direto nos sistemas oficiais.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="process-step fade-in-up">
+                        <div class="process-number">2</div>
+                        <div class="process-content">
+                            <div class="process-icon">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <h3>Análise Jurídica Especializada</h3>
+                            <p>Nossa equipe de especialistas analisa sua multa identificando possíveis inconsistências legais, vícios processuais e argumentos jurídicos sólidos para o recurso.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="process-step fade-in-up">
+                        <div class="process-number">3</div>
+                        <div class="process-content">
+                            <div class="process-icon">
+                                <i class="fas fa-edit"></i>
+                            </div>
+                            <h3>Elaboração do Recurso</h3>
+                            <p>Criamos um recurso personalizado com fundamentação jurídica robusta, citando leis, resoluções do CONTRAN e jurisprudências aplicáveis ao seu caso específico.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="process-step fade-in-up">
+                        <div class="process-number">4</div>
+                        <div class="process-content">
+                            <div class="process-icon">
+                                <i class="fas fa-download"></i>
+                            </div>
+                            <h3>Entrega e Acompanhamento</h3>
+                            <p>Enviamos o recurso pronto para protocolo no órgão responsável. Fornecemos instruções claras e acompanhamos o processo até a decisão final.</p>
+                        </div>
+                    </div>
+                    <div class="process-step fade-in-up">
+    <div class="process-number">5</div>
+    <div class="process-content">
+        <div class="process-icon">
+            <i class="fas fa-hourglass-half"></i>
+        </div>
+        <h3>Efeito Suspensivo Imediato</h3>
+        <p>Após o protocolo, o recurso entra com efeito suspensivo. Isso significa que os débitos das multas e os pontos na CNH ficam congelados até a decisão final do julgamento.</p>
+    </div>
+</div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Legal Basis -->
+        <section class="legal-basis" id="legalidade">
+            <div class="container">
+                <h2 class="section-title fade-in-up">Embasamento Legal Completo</h2>
+                <p class="section-subtitle fade-in-up">Nossos recursos são fundamentados nas leis vigentes</p>
+                
+                <div class="legal-grid">
+                    <div class="legal-card fade-in-up">
+                        <h3><i class="fas fa-gavel"></i> Código de Trânsito Brasileiro</h3>
+                        <p>O CTB em seu artigo 285 garante ao infrator o direito de interpor recurso contra a autuação. Este direito é fundamental e inalienável.</p>
+                        <div class="legal-reference">Art. 285 - Código de Trânsito Brasileiro</div>
+                    </div>
+                    
+                    <div class="legal-card fade-in-up">
+                        <h3><i class="fas fa-balance-scale"></i> Constituição Federal</h3>
+                        <p>O princípio do contraditório e da ampla defesa, previstos no artigo 5º, inciso LV, garantem o direito de defesa em qualquer processo administrativo.</p>
+                        <div class="legal-reference">Art. 5º, LV - Constituição Federal</div>
+                    </div>
+                    
+                    <div class="legal-card fade-in-up">
+                        <h3><i class="fas fa-file-contract"></i> Lei 9.784/99</h3>
+                        <p>Regula o processo administrativo no âmbito da Administração Pública Federal, garantindo direitos e deveres dos administrados.</p>
+                        <div class="legal-reference">Lei Federal 9.784/99</div>
+                    </div>
+                    
+                    <div class="legal-card fade-in-up">
+                        <h3><i class="fas fa-clipboard-check"></i> Resoluções CONTRAN</h3>
+                        <p>Normas técnicas que detalham procedimentos específicos para autuação, sendo fundamentais para identificar irregularidades nos processos.</p>
+                        <div class="legal-reference">Resoluções CONTRAN 149, 432, 798</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Plans Section -->
+        <section class="plans" id="planos">
+            <div class="container">
+                <h2 class="section-title fade-in-up">Escolha o Plano Ideal Para Seu Caso</h2>
+                <p class="section-subtitle fade-in-up">Valores especiais para múltiplos recursos - economize mais contestando várias multas</p>
+                
+                <div class="plans-grid">
+                    <div class="plan-card fade-in-up">
+                        <div class="plan-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <h3 class="plan-name">Recurso Individual</h3>
+                        <div class="plan-price">
+                            <div class="plan-discount">-20%</div>
+                            <div class="plan-price-original">R$ 49,90</div>
+                            R$ 39<span>,90</span>
+                        </div>
+                        <p class="plan-description">Ideal para motoristas com multa recente que desejam contestar de forma pontual</p>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> Análise jurídica especializada</li>
+                            <li><i class="fas fa-check"></i> Recurso personalizado</li>
+                            <li><i class="fas fa-check"></i> Entrega em até 24h</li>
+                            <li><i class="fas fa-check"></i> Suporte prioritário 24/7</li>
+                            <li><i class="fas fa-check"></i> Instruções para protocolo</li>
+                        </ul>
+                        <button class="plan-cta" onclick="selectPlan('individual')">
+                            Contratar Agora
+                        </button>
+                        <div class="plan-guarantee">
+                            <i class="fas fa-shield-alt"></i>
+                            Garantia de 90 dias
+                        </div>
+                    </div>
+                    
+                    <div class="plan-card plan-popular fade-in-up">
+                        <div class="popular-badge">Mais Escolhido</div>
+                        <div class="plan-icon">
+                            <i class="fas fa-copy"></i>
+                        </div>
+                        <h3 class="plan-name">Pacote Intermediário</h3>
+                        <div class="plan-price">
+                            <div class="plan-discount">-50%</div>
+                            <div class="plan-price-original">R$ 199,90</div>
+                            R$ 99<span>,90</span>
+                        </div>
+                        <p class="plan-description">Para motoristas com 2 a 5 multas - economia de 50% por recurso</p>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> Até 5 recursos inclusos</li>
+                            <li class="feature-highlight"><i class="fas fa-star"></i> Análise jurídica preferencial</li>
+                            <li><i class="fas fa-check"></i> Recursos personalizados</li>
+                            <li><i class="fas fa-check"></i> Entrega em até 18h</li>
+                            <li><i class="fas fa-check"></i> Suporte prioritário 24/7</li>
+                            <li><i class="fas fa-check"></i> Consultoria preventiva</li>
+                        </ul>
+                        <button class="plan-cta" onclick="selectPlan('intermediario')">
+                            Contratar Agora
+                        </button>
+                        <div class="plan-guarantee">
+                            <i class="fas fa-shield-alt"></i>
+                            Garantia de 90 dias
+                        </div>
+                    </div>
+                    
+                    <div class="plan-card fade-in-up">
+                        <div class="plan-icon">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                        <h3 class="plan-name">Pacote Premium</h3>
+                        <div class="plan-price">
+                            <div class="plan-discount">-60%</div>
+                            <div class="plan-price-original">R$ 399,90</div>
+                            R$ 149<span>,90</span>
+                        </div>
+                        <p class="plan-description">Para casos complexos com 6 a 10 multas - proteção completa</p>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> Até 10 recursos inclusos</li>
+                            <li><i class="fas fa-check"></i> Análise jurídica detalhada</li>
+                            <li><i class="fas fa-check"></i> Recursos personalizados</li>
+                            <li class="feature-highlight"><i class="fas fa-star"></i> Entrega em até 12h</li>
+                            <li><i class="fas fa-check"></i> Suporte prioritário 24/7</li>
+                            <li><i class="fas fa-check"></i> Consultoria preventiva</li>
+                            <li><i class="fas fa-check"></i> Revisão de pontos na CNH</li>
+                        </ul>
+                        <button class="plan-cta" onclick="selectPlan('premium')">
+                            Contratar Agora
+                        </button>
+                        <div class="plan-guarantee">
+                            <i class="fas fa-shield-alt"></i>
+                            Garantia de 90 dias
+                        </div>
+                    </div>
+                    
+                    <div class="plan-card fade-in-up">
+                        <div class="plan-icon">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <h3 class="plan-name">Pacote Executivo</h3>
+                        <div class="plan-price">
+                            <div class="plan-discount">-70%</div>
+                            <div class="plan-price-original">R$ 849,90</div>
+                            R$ 249<span>,90</span>
+                        </div>
+                        <p class="plan-description">Para frotas e motoristas profissionais com alta incidência</p>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> Até 25 recursos inclusos</li>
+                            <li><i class="fas fa-check"></i> Advogado dedicado</li>
+                            <li><i class="fas fa-check"></i> Análise jurídica completa</li>
+                            <li><i class="fas fa-check"></i> Recursos personalizados</li>
+                            <li class="feature-highlight"><i class="fas fa-star"></i> Entrega em até 6h</li>
+                            <li><i class="fas fa-check"></i> Atendimento executivo 24/7</li>
+                            <li><i class="fas fa-check"></i> Consultoria preventiva</li>
+                            <li><i class="fas fa-check"></i> Relatório detalhado</li>
+                            <li><i class="fas fa-check"></i> Suporte pós-recurso</li>
+                        </ul>
+                        <button class="plan-cta" onclick="selectPlan('executivo')">
+                            Contratar Agora
+                        </button>
+                        <div class="plan-guarantee">
+                            <i class="fas fa-shield-alt"></i>
+                            Garantia de 90 dias
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Enhanced -->
+        <section class="testimonials" id="depoimentos">
+            <div class="container">
+                <h2 class="section-title fade-in-up">Depoimentos Verificados</h2>
+                <p class="section-subtitle fade-in-up">Mais de 3.000 motoristas já recuperaram seus pontos</p>
+                
+                <div class="testimonials-grid">
+                    <div class="testimonial-card fade-in-up">
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">Estava prestes a perder minha carteira com 30 pontos. O recurso funcionou perfeitamente - consegui a anulação de 21 pontos! Equipe super profissional e rápida.</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">CS</div>
+                            <div class="author-info">
+                                <h4>Carlos Silva</h4>
+                                <p>Entregador - São Paulo/SP</p>
+                                <div class="testimonial-verified">
+                                    <i class="fas fa-check-circle"></i>
+                                    Depoimento verificado
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial-card fade-in-up">
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">Comprei o pacote de 10 multas e 8 foram anuladas! O investimento se pagou em poucos dias. Agora indico para todos os colegas motoristas.</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">JS</div>
+                            <div class="author-info">
+                                <h4>Joana Santos</h4>
+                                <p>Motorista Uber - Salvador/BA</p>
+                                <div class="testimonial-verified">
+                                    <i class="fas fa-check-circle"></i>
+                                    Depoimento verificado
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial-card fade-in-up">
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">Excelente atendimento! Recebi tudo por e-mail e WhatsApp. O advogado explicou cada passo e o recurso foi aprovado em 15 dias. Recomendo!</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">RL</div>
+                            <div class="author-info">
+                                <h4>Rogério Lima</h4>
+                                <p>Caminhoneiro - Curitiba/PR</p>
+                                <div class="testimonial-verified">
+                                    <i class="fas fa-check-circle"></i>
+                                    Depoimento verificado
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Enhanced -->
+        <section class="faq" id="faq">
+            <div class="container">
+                <h2 class="section-title fade-in-up">Perguntas Frequentes</h2>
+                <p class="section-subtitle fade-in-up">Esclarecemos todas suas dúvidas sobre o processo</p>
+                
+                <div class="faq-container">
+                    <div class="faq-item fade-in-up">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            <span>Por que devo fazer recurso de multa?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>O recurso de multa é um direito seu garantido por lei. Ao recorrer, você pode:</p>
+                            <ul>
+                                <li>Evitar pontos na CNH e possível suspensão</li>
+                                <li>Economizar com taxas de reciclagem e exame médico</li>
+                                <li>Não pagar a multa se aprovado</li>
+                                <li>Manter seu histórico de condutor limpo</li>
+                                <li>Evitar aumento no seguro do veículo</li>
+                            </ul>
+                            <p>Nossa taxa de sucesso de 83% mostra que, na maioria dos casos, existem argumentos jurídicos válidos para contestação.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item fade-in-up">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            <span>Como funciona exatamente o processo?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Nosso processo é simples e eficiente:</p>
+                            <ul>
+                                <li><strong>1. Envio:</strong> Nosso sistema analisa os dados da multa</li>
+                                <li><strong>2. Análise:</strong> Nossa equipe jurídica analisa o caso</li>
+                                <li><strong>3. Elaboração:</strong> Criamos o recurso personalizado</li>
+                                <li><strong>4. Entrega:</strong> Enviamos o recurso pronto</li>
+                                <li><strong>5. Protocolo:</strong> Você ou nós protocolamos no órgão</li>
+                                <li><strong>6. Acompanhamento:</strong> Monitoramos o resultado</li>
+                            </ul>
+                            <p>Todo o processo é acompanhado via WhatsApp e e-mail.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item fade-in-up">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            <span>É realmente legal recorrer de multas?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p><strong>Sim, é 100% legal!</strong> O direito ao recurso está previsto em:</p>
+                            <ul>
+                                <li>Art. 5º, LV da Constituição Federal (contraditório e ampla defesa)</li>
+                                <li>Art. 285 do Código de Trânsito Brasileiro</li>
+                                <li>Lei 9.784/99 (processo administrativo)</li>
+                                <li>Resoluções do CONTRAN</li>
+                            </ul>
+                            <p>Nossos recursos são elaborados por especialistas em Direito de Trânsito, com fundamentação jurídica sólida e total conformidade com a legislação vigente.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item fade-in-up">
+                        <div class="faq-question" onclick="toggleFAQ(this)">
+                            <span>Quanto tempo demora para ter uma resposta?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Os prazos variam por órgão e estado:</p>
+                            <ul>
+                                <li><strong>São Paulo:</strong> 30 a 45 dias</li>
+                                <li><strong>Rio de Janeiro:</strong> 45 a 60 dias</li>
+                                <li><strong>Outros estados:</strong> 30 a 90 dias</li>
+                            </ul>
+                            <p>Acompanhamos todo o processo e informamos sobre qualquer atualização.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Guarantees -->
+        <section class="guarantees">
+            <div class="container">
+                <h2 class="section-title fade-in-up">Nossas Garantias</h2>
+                <p class="section-subtitle fade-in-up">Trabalhamos com total transparência e segurança</p>
+                
+                <div class="guarantees-grid">
+<div class="guarantee-card fade-in-up">
+    <div class="guarantee-icon">
+        <i class="fas fa-check-circle"></i>
+    </div>
+    <h3>100% Legal</h3>
+    <p>Todos nossos recursos são elaborados conforme a legislação vigente por advogados especialistas em Direito de Trânsito.</p>
+</div>
+
+                    
+                    <div class="guarantee-card fade-in-up">
+                        <div class="guarantee-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3>Entrega Garantida</h3>
+                        <p>Seu recurso será entregue no prazo acordado ou devolvemos seu dinheiro. Compromisso com pontualidade.</p>
+                    </div>
+                    
+                    <div class="guarantee-card fade-in-up">
+                        <div class="guarantee-icon">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <h3>Dados Protegidos</h3>
+                        <p>Certificação ISO 27001 e conformidade total com LGPD. Seus dados estão em segurança máxima.</p>
+                    </div>
+                    
+                    <div class="guarantee-card fade-in-up">
+                        <div class="guarantee-icon">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <h3>Suporte 24/7</h3>
+                        <p>Atendimento humanizado via WhatsApp, e-mail e chat. Nunca deixamos você sem resposta.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+<section class="contact" id="contato">
+  <div class="container">
+    <div class="contact-content" style="justify-content: center; text-align:center;">
+      <h2 style="margin-bottom: 1.2rem;">Por que escolher nosso sistema?</h2>
+      <ul style="list-style:none; padding:0; margin:0 auto 2rem; max-width:600px; text-align:left;">
+        <li style="margin-bottom:1rem; font-size:1.15rem;">
+          <i class="fas fa-shield-alt" style="color:#38a169; margin-right:0.7rem;"></i>
+          <strong>Segurança Jurídica:</strong> Todos os recursos são elaborados por advogados especialistas, com base na legislação vigente.
+        </li>
+        <li style="margin-bottom:1rem; font-size:1.15rem;">
+
+        <li style="margin-bottom:1rem; font-size:1.15rem;">
+          <i class="fas fa-certificate" style="color:#d69e2e; margin-right:0.7rem;"></i>
+          <strong>Alta taxa de sucesso:</strong> Mais de 90% de aprovação nos recursos enviados.
+        </li>
+        <li style="margin-bottom:1rem; font-size:1.15rem;">
+          <i class="fas fa-user-check" style="color:#805ad5; margin-right:0.7rem;"></i>
+          <strong>Privacidade Garantida:</strong> Seus dados protegidos com criptografia e política LGPD.
+        </li>
+      </ul>
+      <button class="urgent-cta" onclick="scrollToPlans()" style="font-size:1.2rem;">
+        <i class="fas fa-clipboard-check"></i> Simular meu recurso agora
+      </button>
+      <p class="contact-note">Evite multas e pontos na CNH — online sem compromisso</p>
+    </div>
+  </div>
+</section>
+
+
+        <!-- Footer Enhanced -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-section">
+                        <h4>Anula Fácil</h4>
+                        <p>Especialistas em recursos de multas de trânsito com mais de 90% de taxa de sucesso. Atendemos todo Brasil com segurança e transparência.</p>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h4>Serviços</h4>
+                        <ul>
+                            <li><a href="#">Defesa Prévia</a></li>
+                            <li><a href="#">Recurso de Multa</a></li>
+                            <li><a href="#">Análise de CNH</a></li>
+                            <li><a href="#">Consultoria Preventiva</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h4>Suporte</h4>
+                        <ul>
+                            <li><a href="#">Central de Ajuda</a></li>
+                            <li><a href="#">Status do Recurso</a></li>
+                            <li><a href="#">Política de Privacidade</a></li>
+                            <li><a href="#">Termos de Uso</a></li>
+                        </ul>
+                    </div>
+                    
+
+                    </div>
+                </div>
+                
+                <div class="footer-bottom">
+                    <div class="footer-certifications">
+                        <div class="cert-badge">
+                            <i class="fas fa-certificate"></i> ISO 27001
+                        </div>
+                        <div class="cert-badge">
+                            <i class="fas fa-shield-alt"></i> LGPD Compliant
+                        </div>
+
+
+                        </div>
+                    </div>
+                    <p class="final-message">"Evite prejuízos maiores. Recorrer é seu direito. Nós te ajudamos com técnica e seriedade."</p>
+                    <p style="margin-top: 1rem; opacity: 0.7; font-size: 0.9rem;">© 2024 Anula Fácil. Todos os direitos reservados.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Floating CTA -->
+    <button class="floating-cta" onclick="scrollToPlans()" title="Iniciar Recurso Agora">
+        <i class="fas fa-rocket"></i>
+    </button>
+
+    <script>
+        // Remove loading overlay after page loads
+        window.addEventListener('load', function() {
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            setTimeout(() => {
+                loadingOverlay.style.opacity = '0';
+                setTimeout(() => loadingOverlay.remove(), 500);
+            }, 1000);
+        });
+
+        let step = 0;
+        
+        function startAnalysis() {
+            const plateInput = document.getElementById('plateInput');
+            let plate = plateInput.value.trim().toUpperCase();
+            
+            if (!plate) {
+                alert('Por favor, digite a placa do veículo');
+                return;
+            }
+            
+            // Remove hífens e espaços para formatação unificada
+            plate = plate.replace(/[-\s]/g, '');
+            
+            // Validate plate format (both old and new Mercosur format)
+            const platePattern = /^[A-Z]{3}[0-9]{4}$|^[A-Z]{3}[0-9]{1}[A-Z]{1}[0-9]{2}$/;
+            if (!platePattern.test(plate)) {
+                alert('Por favor, digite uma placa válida (formato: ABC-1234 ou ABC1D23)');
+                return;
+            }
+            
+            document.getElementById('consultationScreen').style.display = 'none';
+            document.getElementById('analysisScreen').style.display = 'flex';
+            
+            // Start analysis animation
+            runAnalysis();
+        }
+        
+        function runAnalysis() {
+            const steps = ['step1', 'step2', 'step3'];
+            const loadingProgress = document.getElementById('loadingProgress');
+            
+            function showNextStep() {
+                if (step < steps.length) {
+                    document.getElementById(steps[step]).classList.add('active');
+                    
+                    // Update progress bar with animation
+                    const progress = ((step + 1) / steps.length) * 100;
+                    loadingProgress.style.width = progress + '%';
+                    
+                    step++;
+                    
+                    if (step < steps.length) {
+                        setTimeout(showNextStep, 2000);
+                    } else {
+                        // Analysis complete, redirect to landing page
+                        setTimeout(() => {
+                            document.getElementById('analysisScreen').style.display = 'none';
+                            document.getElementById('landingPage').style.display = 'block';
+                            
+                            // Initialize countdown timer
+                            startCountdown();
+                            
+                            // Initialize animations
+                            initAnimations();
+                            
+                            // Smooth scroll to top
+                            window.scrollTo({
+                                top: 0,
+                                behavior: 'smooth'
+                            });
+                        }, 2500);
+                    }
+                }
+            }
+            
+            // Start the step-by-step animation
+            setTimeout(showNextStep, 1000);
+        }
+        
+        // Format plate input automatically (handles both typing modes)
+        document.getElementById('plateInput').addEventListener('input', function(e) {
+            let value = e.target.value.toUpperCase();
+            
+            // Remove non-alphanumeric characters
+            value = value.replace(/[^A-Z0-9]/g, '');
+            
+            // Format based on length
+            if (value.length >= 3) {
+                // Check if it's new Mercosur format or old format
+                if (value.length >= 7 && /^[A-Z]{3}[0-9][A-Z][0-9]{2}/.test(value)) {
+                    // New Mercosur format: ABC1D23
+                    value = value.substring(0, 3) + '-' + value.substring(3, 4) + value.substring(4, 5) + value.substring(5, 7);
+                } else if (value.length >= 3) {
+                    // Old format: ABC1234
+                    value = value.substring(0, 3) + '-' + value.substring(3, 7);
+                }
+            }
+            
+            e.target.value = value;
+        });
+        
+        // Countdown Timer
+        function startCountdown() {
+            const targetDate = new Date().getTime() + (3 * 24 * 60 * 60 * 1000) + (15 * 60 * 1000); // 3 days + 15 minutes
+            
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const distance = targetDate - now;
+                
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                
+                document.getElementById("daysLeft").textContent = days.toString().padStart(2, '0');
+                document.getElementById("timeLeft").textContent = `${hours}h ${minutes}m`;
+                
+                if (distance < 0) {
+                    clearInterval(countdownInterval);
+                    document.getElementById("daysLeft").textContent = "00";
+                    document.getElementById("timeLeft").textContent = "EXPIRADO";
+                }
+            }
+            
+            updateCountdown();
+            const countdownInterval = setInterval(updateCountdown, 60000); // Update every minute
+        }
+        
+        // Navigation scroll effect
+        let lastScrollTop = 0;
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (currentScroll > lastScrollTop && currentScroll > 100) {
+                navbar.classList.add('hidden');
+            } else {
+                navbar.classList.remove('hidden');
+            }
+            lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+        });
+        
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.style.display = mobileMenu.style.display === 'block' ? 'none' : 'block';
+        }
+        
+        // FAQ toggle
+        function toggleFAQ(element) {
+            const faqItem = element.parentElement;
+            const faqAnswer = faqItem.querySelector('.faq-answer');
+            const isOpen = faqItem.classList.contains('active');
+            
+            // Close all other FAQ items
+            document.querySelectorAll('.faq-item').forEach(item => {
+                if (item !== faqItem) {
+                    item.classList.remove('active');
+                    item.querySelector('.faq-answer').classList.remove('show');
+                }
+            });
+            
+            // Toggle current FAQ item
+            if (isOpen) {
+                faqItem.classList.remove('active');
+                faqAnswer.classList.remove('show');
+            } else {
+                faqItem.classList.add('active');
+                faqAnswer.classList.add('show');
+            }
+        }
+        
+        // Scroll animations
+        function initAnimations() {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+            
+            document.querySelectorAll('.fade-in-up').forEach(element => {
+                observer.observe(element);
+            });
+        }
+        
+        // Plan selection
+        // Plan selection
+function selectPlan(planType) {
+    const planData = {
+        'individual': { name: 'Plano Individual', value: 39.90 },
+        'intermediario': { name: 'Pacote Intermediário', value: 99.90 },
+        'premium': { name: 'Pacote Premium', value: 149.90 },
+        'executivo': { name: 'Pacote Executivo', value: 249.90 }
+    };
+    
+    const plan = planData[planType];
+    
+    // Meta Pixel
+    fbq('track', 'InitiateCheckout', {
+        value: plan.value,
+        currency: 'BRL',
+        content_name: plan.name,
+        content_type: 'product',
+        content_ids: [planType]
+    });
+    
+    // Redirecionar para checkout
+    window.location.href = `/checkout.html?plan=${planType}`;
+}function selectPlan(planType) {
+    const planData = {
+        'individual': { name: 'Plano Individual', value: 39.90 },
+        'intermediario': { name: 'Pacote Intermediário', value: 99.90 },
+        'premium': { name: 'Pacote Premium', value: 149.90 },
+        'executivo': { name: 'Pacote Executivo', value: 249.90 }
+    };
+    
+    const plan = planData[planType];
+    
+    // Meta Pixel
+    fbq('track', 'InitiateCheckout', {
+        value: plan.value,
+        currency: 'BRL',
+        content_name: plan.name,
+        content_type: 'product',
+        content_ids: [planType]
+    });
+    
+    // Redirecionar para checkout
+    window.location.href = `/checkout.html?plan=${planType}`;
+}function selectPlan(planType) {
+    const planData = {
+        'individual': { name: 'Plano Individual', value: 39.90 },
+        'intermediario': { name: 'Pacote Intermediário', value: 99.90 },
+        'premium': { name: 'Pacote Premium', value: 149.90 },
+        'executivo': { name: 'Pacote Executivo', value: 249.90 }
+    };
+    
+    const plan = planData[planType];
+    
+    // Meta Pixel
+    fbq('track', 'InitiateCheckout', {
+        value: plan.value,
+        currency: 'BRL',
+        content_name: plan.name,
+        content_type: 'product',
+        content_ids: [planType]
+    });
+    
+    // Redirecionar para checkout
+    window.location.href = `/checkout.html?plan=${planType}`;
+}
+        
+        // Smooth scroll functions
+        function scrollToPlans() {
+            document.getElementById('planos').scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+        
+        function scrollToHowItWorks() {
+            document.getElementById('como-funciona').scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+        
+        // WhatsApp integration
+        function openWhatsApp() {
+            const phoneNumber = '5511987654321';
+            const message = 'Olá! Tenho interesse nos serviços de recurso de multas. Gostaria de mais informações.';
+            const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappURL, '_blank');
+        }
+        
+        // Add keyboard navigation for accessibility
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                // Close mobile menu if open
+                document.getElementById('mobileMenu').style.display = 'none';
+            }
+        });
+        
+        // Add click outside to close mobile menu
+        document.addEventListener('click', function(e) {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuToggle = document.querySelector('.mobile-menu-toggle');
+            
+            if (!mobileMenu.contains(e.target) && !menuToggle.contains(e.target)) {
+                mobileMenu.style.display = 'none';
+            }
+        });
+        
+        // Lazy loading for images (if any images were added)
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        img.classList.remove('lazy');
+                        imageObserver.unobserve(img);
+                    }
+                });
+            });
+            
+            document.querySelectorAll('img[data-src]').forEach(img => {
+                imageObserver.observe(img);
+            });
+        }
+        
+        // Prevent form submission for demo purposes
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Demo mode - formulário não enviado');
+            });
+        });
+        
+        // Add smooth scrolling to all anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Initialize everything when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set initial state
+            document.getElementById('landingPage').style.display = 'none';
+            document.getElementById('analysisScreen').style.display = 'none';
+            
+            // Setup keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                // Alt + R to restart consultation
+                if (e.altKey && e.key === 'r') {
+                    document.getElementById('landingPage').style.display = 'none';
+                    document.getElementById('analysisScreen').style.display = 'none';
+                    document.getElementById('consultationScreen').style.display = 'flex';
+                    step = 0;
+                }
+            });
+        });
+    </script>
+    <!-- Tela de transição para checkout -->
+<div id="checkoutTransition" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(26, 54, 93, 0.97); z-index: 9999; flex-direction: column; justify-content: center; align-items: center; color: white; opacity: 0; transition: opacity 0.3s ease;">
+    <div style="text-align: center; max-width: 500px; padding: 30px;">
+        <div style="font-size: 40px; margin-bottom: 20px;">
+            <i class="fas fa-check-circle" style="color: #38a169;"></i>
+        </div>
+        <h2 style="font-size: 24px; margin-bottom: 15px; font-weight: 700;" id="checkoutPlanName">Plano selecionado com sucesso!</h2>
+        <p style="font-size: 16px; margin-bottom: 20px; opacity: 0.9;" id="checkoutPlanPrice"></p>
+        <div style="margin: 30px 0;">
+            <div class="loader" style="border: 4px solid rgba(255,255,255,0.3); border-top: 4px solid white; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto;"></div>
+            <p style="margin-top: 15px;">Redirecionando para o ambiente seguro de pagamento...</p>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
