@@ -345,9 +345,12 @@
 
     <script>
         // Configuração do Mercado Pago
-        const mp = new MercadoPago('APP_USR-8de5b681-b88c-4a2b-9814-2961e8e10a51', {
-            locale: 'pt-BR'
-        });
+// Na linha 251 do seu checkout.html, substitua por:
+
+// Configuração do Mercado Pago com SUA Public Key
+const mp = new MercadoPago('APP_USR-8de5b681-b88c-4a2b-9814-2961e8e10a51', {
+    locale: 'pt-BR'
+});
 
         // Dados do plano selecionado
         const planData = {
