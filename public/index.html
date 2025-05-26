@@ -2661,72 +2661,29 @@ src="https://www.facebook.com/tr?id=580549265071414&ev=PageView&noscript=1"/>
             });
         }
         
-        // Plan selection
-        // Plan selection
-function selectPlan(planType) {
-    const planData = {
-        'individual': { name: 'Plano Individual', value: 39.90 },
-        'intermediario': { name: 'Pacote Intermediário', value: 99.90 },
-        'premium': { name: 'Pacote Premium', value: 149.90 },
-        'executivo': { name: 'Pacote Executivo', value: 249.90 }
-    };
-    
-    const plan = planData[planType];
-    
-    // Meta Pixel
-    fbq('track', 'InitiateCheckout', {
-        value: plan.value,
-        currency: 'BRL',
-        content_name: plan.name,
-        content_type: 'product',
-        content_ids: [planType]
-    });
-    
-    // Redirecionar para checkout
-    window.location.href = `/checkout.html?plan=${planType}`;
-}function selectPlan(planType) {
-    const planData = {
-        'individual': { name: 'Plano Individual', value: 39.90 },
-        'intermediario': { name: 'Pacote Intermediário', value: 99.90 },
-        'premium': { name: 'Pacote Premium', value: 149.90 },
-        'executivo': { name: 'Pacote Executivo', value: 249.90 }
-    };
-    
-    const plan = planData[planType];
-    
-    // Meta Pixel
-    fbq('track', 'InitiateCheckout', {
-        value: plan.value,
-        currency: 'BRL',
-        content_name: plan.name,
-        content_type: 'product',
-        content_ids: [planType]
-    });
-    
-    // Redirecionar para checkout
-    window.location.href = `/checkout.html?plan=${planType}`;
-}function selectPlan(planType) {
-    const planData = {
-        'individual': { name: 'Plano Individual', value: 39.90 },
-        'intermediario': { name: 'Pacote Intermediário', value: 99.90 },
-        'premium': { name: 'Pacote Premium', value: 149.90 },
-        'executivo': { name: 'Pacote Executivo', value: 249.90 }
-    };
-    
-    const plan = planData[planType];
-    
-    // Meta Pixel
-    fbq('track', 'InitiateCheckout', {
-        value: plan.value,
-        currency: 'BRL',
-        content_name: plan.name,
-        content_type: 'product',
-        content_ids: [planType]
-    });
-    
-    // Redirecionar para checkout
-    window.location.href = `/checkout.html?plan=${planType}`;
-}
+ // Plan selection
+        function selectPlan(planType) {
+            const planData = {
+                'individual': { name: 'Plano Individual', value: 39.90 },
+                'intermediario': { name: 'Pacote Intermediário', value: 99.90 },
+                'premium': { name: 'Pacote Premium', value: 149.90 },
+                'executivo': { name: 'Pacote Executivo', value: 249.90 }
+            };
+            
+            const plan = planData[planType];
+            
+            // Meta Pixel
+            fbq('track', 'InitiateCheckout', {
+                value: plan.value,
+                currency: 'BRL',
+                content_name: plan.name,
+                content_type: 'product',
+                content_ids: [planType]
+            });
+            
+            // Redirecionar para checkout transparente
+            window.location.href = `/checkout.html?plan=${planType}`;
+        }
         
         // Smooth scroll functions
         function scrollToPlans() {
