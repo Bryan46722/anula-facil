@@ -228,19 +228,6 @@
             display: none;
         }
         
-        /* Estilos específicos do Mercado Pago */
-        #form-checkout {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        #form-checkout input {
-            margin-bottom: 10px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        
         @media (max-width: 768px) {
             .form-row {
                 grid-template-columns: 1fr;
@@ -293,11 +280,11 @@
             <div class="form-section">
                 <h3><i class="fas fa-credit-card"></i> Método de Pagamento</h3>
                 <div class="payment-methods">
-                    <div class="payment-method active" data-method="credit_card">
+                    <div class="payment-method" data-method="credit_card">
                         <i class="fas fa-credit-card"></i>
                         <div>Cartão</div>
                     </div>
-                    <div class="payment-method" data-method="pix">
+                    <div class="payment-method active" data-method="pix">
                         <i class="fas fa-qrcode"></i>
                         <div>PIX</div>
                     </div>
@@ -311,7 +298,7 @@
             <!-- Formulário do Mercado Pago -->
             <form id="form-checkout">
                 <!-- Dados do Cartão (mostrado apenas para cartão) -->
-                <div id="card-form" class="form-section">
+                <div id="card-form" class="form-section" style="display: none;">
                     <h3><i class="fas fa-lock"></i> Dados do Cartão</h3>
                     <div class="form-group">
                         <label for="cardNumber">Número do Cartão</label>
@@ -347,7 +334,7 @@
                 </div>
                 
                 <button type="submit" class="checkout-button" id="submitButton">
-                    <span id="buttonText">Finalizar Pagamento</span>
+                    <span id="buttonText">Gerar PIX</span>
                     <div class="loading" id="loading">
                         <div class="loader"></div>
                     </div>
@@ -357,52 +344,11 @@
     </div>
 
     <script>
-        function startPixTimer() {
-    let timeLeft = 10 * 60; // 10 minutos em segundos
-    const timerElement = document.getElementById('timeRemaining');
-    
-    const timer = setInterval(() => {
-        const minutes = Math.floor(timeLeft / 60);
-        const seconds = timeLeft % 60;
-        
-        // Formatar como MM:SS
-        const display = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        timerElement.textContent = display;
-        
-        // Mudar cor quando restam poucos minutos
-        const timerContainer = document.getElementById('pixTimer');
-        if (timeLeft <= 120) { // 2 minutos
-            timerContainer.style.background = '#f8d7da';
-            timerContainer.style.borderColor = '#f5c6cb';
-            timerElement.style.color = '#721c24';
-        } else if (timeLeft <= 300) { // 5 minutos
-            timerContainer.style.background = '#fff3cd';
-            timerContainer.style.borderColor = '#ffeaa7';
-            timerElement.style.color = '#856404';
-        }
-        
-        if (timeLeft <= 0) {
-            clearInterval(timer);
-            timerElement.textContent = 'EXPIRADO';
-            timerContainer.style.background = '#f8d7da';
-            timerContainer.innerHTML = `
-                <p style="margin: 0; color: #721c24; font-weight: bold;">
-                    ❌ PIX Expirado! 
-                    <button onclick="window.location.reload()" style="background: #dc3545; color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; margin-left: 10px;">
-                        Gerar Novo PIX
-                    </button>
-                </p>
-            `;
-        }
-        
-        timeLeft--;
-    }, 1000);
-}
         // Configuração do Mercado Pago
-// Configuração do Mercado Pago
-const mp = new MercadoPago('APP_USR-8de5b681-b88c-4a2b-9814-2961e8e10a51', {
-    locale: 'pt-BR'
-});
+        const mp = new MercadoPago('APP_USR-8de5b681-b88c-4a2b-9814-2961e8e10a51', {
+            locale: 'pt-BR'
+        });
+
         // Dados do plano selecionado
         const planData = {
             individual: { name: 'Plano Individual', price: 39.90 },
@@ -412,13 +358,13 @@ const mp = new MercadoPago('APP_USR-8de5b681-b88c-4a2b-9814-2961e8e10a51', {
         };
 
         let selectedPlan = 'individual';
-        let selectedPaymentMethod = 'credit_card';
+        let selectedPaymentMethod = 'pix';
 
         // Inicializar página
         document.addEventListener('DOMContentLoaded', function() {
-            // Configurar plano baseado na URL ou localStorage
+            // Configurar plano baseado na URL
             const urlParams = new URLSearchParams(window.location.search);
-            const plan = urlParams.get('plan') || localStorage.getItem('selectedPlan') || 'individual';
+            const plan = urlParams.get('plan') || 'individual';
             
             if (planData[plan]) {
                 selectedPlan = plan;
@@ -477,48 +423,7 @@ const mp = new MercadoPago('APP_USR-8de5b681-b88c-4a2b-9814-2961e8e10a51', {
         }
 
         function setupMercadoPago() {
-            // Configurar campos do cartão
-            const cardNumber = mp.fields.create('cardNumber', {
-                placeholder: "Número do cartão"
-            }).mount('#cardNumber');
-
-            const expirationDate = mp.fields.create('expirationDate', {
-                placeholder: "MM/AA"
-            }).mount('#expirationDate');
-
-            const securityCode = mp.fields.create('securityCode', {
-                placeholder: "Código de segurança"
-            }).mount('#securityCode');
-
-            // Buscar métodos de pagamento e atualizar parcelamento
-            cardNumber.on('change', function(event) {
-                if (event.brand) {
-                    getInstallments(event.brand);
-                }
-            });
-        }
-
-        async function getInstallments(brand) {
-            try {
-                const installments = await mp.getInstallments({
-                    amount: planData[selectedPlan].price,
-                    locale: 'pt-BR',
-                    processingMode: 'aggregator',
-                    paymentTypeId: 'credit_card'
-                });
-
-                const installmentsSelect = document.getElementById('installments');
-                installmentsSelect.innerHTML = '<option value="">Selecione...</option>';
-
-                if (installments[0]) {
-                    installments[0].payer_costs.forEach(option => {
-                        const text = `${option.installments}x de R$ ${option.installment_amount.toFixed(2).replace('.', ',')} ${option.total_amount > planData[selectedPlan].price ? `(Total: R$ ${option.total_amount.toFixed(2).replace('.', ',')})` : 'sem juros'}`;
-                        installmentsSelect.innerHTML += `<option value="${option.installments}">${text}</option>`;
-                    });
-                }
-            } catch (error) {
-                console.error('Erro ao buscar parcelamento:', error);
-            }
+            console.log('Mercado Pago configurado');
         }
 
         async function handleFormSubmit(e) {
@@ -573,16 +478,8 @@ const mp = new MercadoPago('APP_USR-8de5b681-b88c-4a2b-9814-2961e8e10a51', {
         }
 
         async function createCardPayment() {
-            const token = await mp.fields.createCardToken({
-                cardholderName: document.getElementById('cardholderName').value,
-                identificationType: 'CPF',
-                identificationNumber: document.getElementById('docNumber').value.replace(/\D/g, '')
-            });
-
             const paymentData = {
-                token: token.id,
-                installments: parseInt(document.getElementById('installments').value),
-                payment_method_id: token.payment_method_id,
+                payment_method_id: 'visa',
                 payer: {
                     email: document.getElementById('email').value,
                     first_name: document.getElementById('firstName').value,
@@ -658,7 +555,7 @@ const mp = new MercadoPago('APP_USR-8de5b681-b88c-4a2b-9814-2961e8e10a51', {
             if (response.status === 'approved') {
                 showSuccess('Pagamento aprovado! Redirecionando...');
                 setTimeout(() => {
-                    window.location.href = '/success?payment_id=' + response.id;
+                    window.location.href = '/success.html?payment_id=' + response.id;
                 }, 2000);
             } else if (response.status === 'pending') {
                 if (selectedPaymentMethod === 'pix') {
@@ -672,55 +569,122 @@ const mp = new MercadoPago('APP_USR-8de5b681-b88c-4a2b-9814-2961e8e10a51', {
         }
 
         function showPixQRCode(response) {
-    const successDiv = document.getElementById('successMessage');
-    
-    // Gerar QR Code usando API externa (já que o base64 está vazio)
-    const qrCodeURL = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(response.qr_code)}`;
-    
-    successDiv.innerHTML = `
-        <h3>🎉 PIX Gerado com Sucesso!</h3>
-        <p><strong>Escaneie o QR Code ou copie o código PIX:</strong></p>
-        
-        <div style="text-align: center; margin: 1.5rem 0;">
-            <img src="${qrCodeURL}" style="max-width: 200px; border: 2px solid #38a169; border-radius: 10px;" alt="QR Code PIX">
-        </div>
-        
-        <div style="background: #f7fafc; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
-            <label style="font-weight: bold; color: #2d5aa0;">Código PIX (Copie e Cole):</label>
-            <textarea readonly style="width: 100%; height: 80px; margin: 10px 0; padding: 10px; border: 1px solid #e2e8f0; border-radius: 5px; font-size: 12px; font-family: monospace;">${response.qr_code}</textarea>
-        </div>
-        
-        <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-            <button onclick="copyPixCode('${response.qr_code}')" style="background: #1a365d; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: bold;">
-                📋 Copiar Código PIX
-            </button>
-            <button onclick="window.location.reload()" style="background: #38a169; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: bold;">
-                🔄 Gerar Novo PIX
-            </button>
-        </div>
-        
-        <div id="pixTimer" style="margin-top: 1.5rem; padding: 1rem; background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; text-align: center;">
-            <p style="margin: 0; color: #856404; font-weight: bold;">
-                ⏰ Tempo restante para pagamento: <span id="timeRemaining">10:00</span>
-            </p>
-        </div>
-        
-        <div style="margin-top: 1rem; padding: 1rem; background: #e6f7ff; border-radius: 8px;">
-            <p style="margin: 0; font-size: 14px; color: #1a365d;">
-                <strong>💡 Como pagar:</strong><br>
-                1. Abra o app do seu banco<br>
-                2. Escolha PIX → Pagar com QR Code<br>
-                3. Escaneie o código acima<br>
-                4. Confirme o pagamento de <strong>R$ 39,90</strong>
-            </p>
-        </div>
-    `;
-    
-    successDiv.style.display = 'block';
-    
-    // Iniciar timer de 10 minutos
-    startPixTimer();
-}
+            const successDiv = document.getElementById('successMessage');
+            
+            // Gerar QR Code usando API externa
+            const qrCodeURL = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(response.qr_code)}`;
+            
+            successDiv.innerHTML = `
+                <h3>🎉 PIX Gerado com Sucesso!</h3>
+                <p><strong>Escaneie o QR Code ou copie o código PIX:</strong></p>
+                
+                <div style="text-align: center; margin: 1.5rem 0;">
+                    <img src="${qrCodeURL}" style="max-width: 250px; border: 3px solid #38a169; border-radius: 15px; box-shadow: 0 10px 25px rgba(56, 161, 105, 0.3);" alt="QR Code PIX">
+                </div>
+                
+                <div style="background: #f7fafc; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                    <label style="font-weight: bold; color: #2d5aa0; display: block; margin-bottom: 8px;">Código PIX (Copie e Cole):</label>
+                    <textarea readonly style="width: 100%; height: 80px; padding: 10px; border: 1px solid #e2e8f0; border-radius: 5px; font-size: 12px; font-family: monospace; resize: none;">${response.qr_code}</textarea>
+                </div>
+                
+                <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 1rem 0;">
+                    <button onclick="copyPixCode('${response.qr_code}')" style="background: #1a365d; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: all 0.3s ease;">
+                        📋 Copiar Código PIX
+                    </button>
+                    <button onclick="window.location.reload()" style="background: #38a169; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: all 0.3s ease;">
+                        🔄 Gerar Novo PIX
+                    </button>
+                </div>
+                
+                <div id="pixTimer" style="margin: 1.5rem 0; padding: 1rem; background: #fff3cd; border: 2px solid #ffeaa7; border-radius: 10px; text-align: center;">
+                    <p style="margin: 0; color: #856404; font-weight: bold; font-size: 16px;">
+                        ⏰ Tempo restante para pagamento: <span id="timeRemaining">10:00</span>
+                    </p>
+                </div>
+                
+                <div style="margin-top: 1rem; padding: 1rem; background: #e6f7ff; border-radius: 8px; border-left: 4px solid #2d5aa0;">
+                    <p style="margin: 0; font-size: 14px; color: #1a365d;">
+                        <strong>💡 Como pagar:</strong><br>
+                        1. Abra o app do seu banco<br>
+                        2. Escolha PIX → Pagar com QR Code<br>
+                        3. Escaneie o código acima<br>
+                        4. Confirme o pagamento de <strong>R$ ${planData[selectedPlan].price.toFixed(2).replace('.', ',')}</strong>
+                    </p>
+                </div>
+            `;
+            
+            successDiv.style.display = 'block';
+            startPixTimer();
+        }
+
+        function startPixTimer() {
+            let timeLeft = 10 * 60; // 10 minutos em segundos
+            const timerElement = document.getElementById('timeRemaining');
+            
+            const timer = setInterval(() => {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                
+                // Formatar como MM:SS
+                const display = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                timerElement.textContent = display;
+                
+                // Mudar cor quando restam poucos minutos
+                const timerContainer = document.getElementById('pixTimer');
+                if (timeLeft <= 120) { // 2 minutos
+                    timerContainer.style.background = '#f8d7da';
+                    timerContainer.style.borderColor = '#f5c6cb';
+                    timerElement.style.color = '#721c24';
+                } else if (timeLeft <= 300) { // 5 minutos
+                    timerContainer.style.background = '#fff3cd';
+                    timerContainer.style.borderColor = '#ffeaa7';
+                    timerElement.style.color = '#856404';
+                }
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    timerElement.textContent = 'EXPIRADO';
+                    timerContainer.style.background = '#f8d7da';
+                    timerContainer.innerHTML = `
+                        <p style="margin: 0; color: #721c24; font-weight: bold;">
+                            ❌ PIX Expirado! 
+                            <button onclick="window.location.reload()" style="background: #dc3545; color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; margin-left: 10px;">
+                                Gerar Novo PIX
+                            </button>
+                        </p>
+                    `;
+                }
+                
+                timeLeft--;
+            }, 1000);
+        }
+
+        function copyPixCode(code) {
+            navigator.clipboard.writeText(code).then(() => {
+                // Mostrar feedback visual
+                const button = event.target;
+                const originalText = button.textContent;
+                button.textContent = '✅ Copiado!';
+                button.style.background = '#38a169';
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = '#1a365d';
+                }, 2000);
+            }).catch(() => {
+                // Fallback se não conseguir copiar
+                alert('Código PIX copiado para área de transferência!');
+            });
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
 
         function showSuccess(message) {
             const successDiv = document.getElementById('successMessage');
