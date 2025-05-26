@@ -451,7 +451,7 @@ const response = await fetch('/api/process-payment-final', {
 
             console.log('🚀 Enviando dados para pagamento:', paymentData);
 
-            const response = await fetch('/api/process-payment', {
+const response = await fetch('/api/final-payment', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
