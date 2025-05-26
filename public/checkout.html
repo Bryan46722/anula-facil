@@ -313,21 +313,18 @@
     </div>
 
     <script>
-        // Configuração do Mercado Pago com sua Public Key CORRETA
-        // Na linha de configuração do Mercado Pago no checkout.html, altere para:
+        // Configuração do Mercado Pago com PUBLIC KEY CORRETA
+        const mp = new MercadoPago('APP_USR-8de5b681-b88c-4d2b-9814-2961e8e10a51', {
+            locale: 'pt-BR'
+        });
 
-const mp = new MercadoPago('APP_USR-8de5b681-b88c-4d2b-9814-2961e8e10a51', {
-    locale: 'pt-BR'
-});
-
-// E na função createPayment, altere a URL para:
-const response = await fetch('/api/process-payment-final', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(paymentData)
-});
+        // Dados do plano selecionado
+        const planData = {
+            individual: { name: 'Plano Individual', price: 39.90 },
+            intermediario: { name: 'Pacote Intermediário', price: 99.90 },
+            premium: { name: 'Pacote Premium', price: 149.90 },
+            executivo: { name: 'Pacote Executivo', price: 249.90 }
+        };
 
         let selectedPlan = 'individual';
         let selectedPaymentMethod = 'pix';
@@ -451,7 +448,8 @@ const response = await fetch('/api/process-payment-final', {
 
             console.log('🚀 Enviando dados para pagamento:', paymentData);
 
-const response = await fetch('/api/force-real-pix-final', {
+            // USAR O ENDPOINT COM CLIENT ID E SECRET
+            const response = await fetch('/api/complete-payment', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -496,8 +494,8 @@ const response = await fetch('/api/force-real-pix-final', {
                 return;
             }
 
-            // Verificar se é PIX válido
-            if (!response.is_valid_pix) {
+            // Verificar se é PIX válido (se a propriedade existir)
+            if (response.hasOwnProperty('is_valid_pix') && !response.is_valid_pix) {
                 showError('Erro: QR Code inválido gerado. Contate o suporte.');
                 console.error('QR Code inválido:', response.qr_code.substring(0, 50));
                 return;
