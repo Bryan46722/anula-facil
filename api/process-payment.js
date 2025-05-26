@@ -1,6 +1,3 @@
-// Importar o SDK do Mercado Pago no topo
-import { MercadoPagoConfig, Payment } from 'mercadopago';
-
 export default async function handler(req, res) {
     // Headers CORS
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -16,100 +13,54 @@ export default async function handler(req, res) {
     }
 
     try {
-        console.log('🔥 Iniciando processamento de pagamento...');
-        console.log('📝 Body recebido:', req.body);
+        console.log('🟢 API funcionando!');
+        console.log('📨 Dados recebidos:', req.body);
 
         const { payment_method_id, payer, transaction_amount } = req.body;
 
-        // Validação básica
-        if (!payment_method_id || !payer || !transaction_amount) {
-            console.log('❌ Dados obrigatórios ausentes');
+        // TESTE 1: Retornar dados recebidos
+        if (!payment_method_id) {
             return res.status(400).json({ 
-                error: 'Dados obrigatórios ausentes',
-                received: { payment_method_id, payer, transaction_amount }
+                error: 'payment_method_id obrigatório',
+                received: req.body 
             });
         }
 
-        // Sua credencial do Mercado Pago
-        const MP_ACCESS_TOKEN = 'APP_USR-7586214711012079-052523-5bad69684c25c61942721988b9ce9bf6-510034420';
+        // TESTE 2: Simular PIX sem Mercado Pago (para testar se a API funciona)
+        if (payment_method_id === 'pix') {
+            console.log('🧪 Simulando PIX para teste...');
+            
+            // QR Code de teste que funciona
+            const testQrCode = '00020101021226580014br.gov.bcb.pix2536pix.example.com/qr/v2/9d36b84f-c70f-620454035303986520040000530398654040.015802BR5913ANULA FACIL6014BRASILIA62070503***63041234';
+            
+            return res.status(200).json({
+                id: 'test_pix_' + Date.now(),
+                status: 'pending',
+                payment_method_id: 'pix',
+                qr_code: testQrCode,
+                qr_code_base64: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAeFBMVEX///8AAAD7+/sEBAQICAj39/fz8/Pw8PDt7e3q6uro6Ojl5eXi4uLf39/c3Nz29vbT09PQ0NDNzc3Kysnb29vGxsYgICC+vr48PDw1NTUtLS0pKSkcHBwUFBQQEBA=',
+                test_mode: true,
+                message: 'API funcionando! Agora vamos testar o Mercado Pago real.'
+            });
+        }
 
-        console.log('🔑 Configurando cliente Mercado Pago...');
-
-        // Configurar cliente
-        const client = new MercadoPagoConfig({
-            accessToken: MP_ACCESS_TOKEN
+        // TESTE 3: Outros métodos
+        return res.status(200).json({
+            id: 'test_' + Date.now(),
+            status: 'approved',
+            payment_method_id: payment_method_id,
+            test_mode: true,
+            message: 'Método simulado funcionando!'
         });
 
-        const payment = new Payment(client);
-
-        if (payment_method_id === 'pix') {
-            console.log('📱 Processando PIX...');
-
-            // Dados do pagamento PIX
-            const paymentData = {
-                transaction_amount: Number(transaction_amount),
-                description: 'Recurso de Multa - Anula Fácil',
-                payment_method_id: 'pix',
-                payer: {
-                    email: payer.email,
-                    first_name: payer.first_name,
-                    last_name: payer.last_name,
-                    identification: {
-                        type: 'CPF',
-                        number: payer.identification.number.replace(/[^0-9]/g, '')
-                    }
-                }
-            };
-
-            console.log('📤 Dados para MP:', paymentData);
-
-            // Criar pagamento
-            const result = await payment.create({ body: paymentData });
-
-            console.log('📥 Resposta do MP:', result);
-
-            // Preparar resposta
-            const response = {
-                id: result.id,
-                status: result.status,
-                payment_method_id: result.payment_method_id
-            };
-
-            // Adicionar QR Code se existir
-            if (result.point_of_interaction?.transaction_data?.qr_code) {
-                response.qr_code = result.point_of_interaction.transaction_data.qr_code;
-                response.qr_code_base64 = result.point_of_interaction.transaction_data.qr_code_base64;
-                console.log('✅ QR Code gerado!');
-            } else {
-                console.log('⚠️ QR Code não encontrado na resposta');
-            }
-
-            return res.status(200).json(response);
-
-        } else {
-            // Outros métodos de pagamento
-            console.log('💳 Método não implementado:', payment_method_id);
-            return res.status(200).json({
-                id: 'test_' + Date.now(),
-                status: 'pending',
-                payment_method_id: payment_method_id,
-                message: 'Método simulado para teste'
-            });
-        }
-
     } catch (error) {
-        console.error('💥 ERRO COMPLETO:', error);
-        console.error('📊 Stack:', error.stack);
+        console.error('💥 ERRO:', error);
         
-        // Log específico para erros do MP
-        if (error.cause) {
-            console.error('🔴 Erros do Mercado Pago:', error.cause);
-        }
-
         return res.status(500).json({
-            error: 'Erro interno do servidor',
+            error: 'Erro no servidor',
             message: error.message,
-            details: process.env.NODE_ENV === 'development' ? error.stack : undefined
+            stack: error.stack,
+            timestamp: new Date().toISOString()
         });
     }
 }
