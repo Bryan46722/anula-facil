@@ -19,7 +19,7 @@
   "author": "Anula Fácil",
   "license": "MIT",
   "dependencies": {
-    "mercadopago": "^2.0.0"
+    "mercadopago": "^2.7.0"
   },
   "devDependencies": {
     "@vercel/node": "^3.0.0"
