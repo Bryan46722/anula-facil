@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout Transparente - Mercado Pago</title>
+    <title>Checkout Seguro - Anula Fácil</title>
     
     <!-- Mercado Pago SDK -->
     <script src="https://sdk.mercadopago.com/js/v2"></script>
@@ -297,37 +297,6 @@
             
             <!-- Formulário do Mercado Pago -->
             <form id="form-checkout">
-                <!-- Dados do Cartão (mostrado apenas para cartão) -->
-                <div id="card-form" class="form-section" style="display: none;">
-                    <h3><i class="fas fa-lock"></i> Dados do Cartão</h3>
-                    <div class="form-group">
-                        <label for="cardNumber">Número do Cartão</label>
-                        <input type="text" id="cardNumber" data-checkout="cardNumber" class="form-control" placeholder="0000 0000 0000 0000">
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="expirationDate">Validade</label>
-                            <input type="text" id="expirationDate" data-checkout="expirationDate" class="form-control" placeholder="MM/AA">
-                        </div>
-                        <div class="form-group">
-                            <label for="securityCode">CVV</label>
-                            <input type="text" id="securityCode" data-checkout="securityCode" class="form-control" placeholder="123">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="cardholderName">Nome no Cartão</label>
-                        <input type="text" id="cardholderName" data-checkout="cardholderName" class="form-control" placeholder="João Silva">
-                    </div>
-                    
-                    <!-- Parcelamento -->
-                    <div class="form-group">
-                        <label for="installments">Parcelamento</label>
-                        <select id="installments" data-checkout="installments" class="form-control">
-                            <option value="">Selecione...</option>
-                        </select>
-                    </div>
-                </div>
-                
                 <div class="security-info">
                     <i class="fas fa-shield-alt"></i>
                     <span>Pagamento 100% seguro processado pelo Mercado Pago</span>
@@ -344,13 +313,10 @@
     </div>
 
     <script>
-        // Configuração do Mercado Pago
-// Na linha 251 do seu checkout.html, substitua por:
-
-// Configuração do Mercado Pago com SUA Public Key
-const mp = new MercadoPago('APP_USR-8de5b681-b88c-4a2b-9814-2961e8e10a51', {
-    locale: 'pt-BR'
-});
+        // Configuração do Mercado Pago com sua Public Key CORRETA
+        const mp = new MercadoPago('APP_USR-8de5b681-b88c-4a2b-9814-2961e8e10a51', {
+            locale: 'pt-BR'
+        });
 
         // Dados do plano selecionado
         const planData = {
@@ -375,7 +341,6 @@ const mp = new MercadoPago('APP_USR-8de5b681-b88c-4a2b-9814-2961e8e10a51', {
             }
 
             setupEventListeners();
-            setupMercadoPago();
         });
 
         function updatePlanDisplay() {
@@ -391,7 +356,7 @@ const mp = new MercadoPago('APP_USR-8de5b681-b88c-4a2b-9814-2961e8e10a51', {
                     document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('active'));
                     this.classList.add('active');
                     selectedPaymentMethod = this.dataset.method;
-                    togglePaymentForm();
+                    updateButtonText();
                 });
             });
 
@@ -408,25 +373,16 @@ const mp = new MercadoPago('APP_USR-8de5b681-b88c-4a2b-9814-2961e8e10a51', {
             document.getElementById('form-checkout').addEventListener('submit', handleFormSubmit);
         }
 
-        function togglePaymentForm() {
-            const cardForm = document.getElementById('card-form');
+        function updateButtonText() {
             const buttonText = document.getElementById('buttonText');
             
             if (selectedPaymentMethod === 'credit_card') {
-                cardForm.style.display = 'block';
                 buttonText.textContent = 'Finalizar Pagamento';
+            } else if (selectedPaymentMethod === 'pix') {
+                buttonText.textContent = 'Gerar PIX';
             } else {
-                cardForm.style.display = 'none';
-                if (selectedPaymentMethod === 'pix') {
-                    buttonText.textContent = 'Gerar PIX';
-                } else {
-                    buttonText.textContent = 'Gerar Boleto';
-                }
+                buttonText.textContent = 'Gerar Boleto';
             }
-        }
-
-        function setupMercadoPago() {
-            console.log('Mercado Pago configurado');
         }
 
         async function handleFormSubmit(e) {
@@ -447,21 +403,14 @@ const mp = new MercadoPago('APP_USR-8de5b681-b88c-4a2b-9814-2961e8e10a51', {
                     throw new Error('Por favor, preencha todos os dados obrigatórios');
                 }
 
-                // Criar pagamento baseado no método selecionado
-                let paymentData;
-                
-                if (selectedPaymentMethod === 'credit_card') {
-                    paymentData = await createCardPayment();
-                } else if (selectedPaymentMethod === 'pix') {
-                    paymentData = await createPixPayment();
-                } else {
-                    paymentData = await createTicketPayment();
-                }
+                // Criar pagamento
+                const paymentData = await createPayment();
 
                 // Processar resposta
                 handlePaymentResponse(paymentData);
 
             } catch (error) {
+                console.error('Erro ao processar pagamento:', error);
                 showError(error.message || 'Erro ao processar pagamento');
             } finally {
                 // Ocultar loading
@@ -480,9 +429,9 @@ const mp = new MercadoPago('APP_USR-8de5b681-b88c-4a2b-9814-2961e8e10a51', {
             return email && firstName && lastName && docNumber.length === 11;
         }
 
-        async function createCardPayment() {
+        async function createPayment() {
             const paymentData = {
-                payment_method_id: 'visa',
+                payment_method_id: selectedPaymentMethod,
                 payer: {
                     email: document.getElementById('email').value,
                     first_name: document.getElementById('firstName').value,
@@ -492,66 +441,30 @@ const mp = new MercadoPago('APP_USR-8de5b681-b88c-4a2b-9814-2961e8e10a51', {
                         number: document.getElementById('docNumber').value.replace(/\D/g, '')
                     }
                 },
-                transaction_amount: planData[selectedPlan].price
+                transaction_amount: planData[selectedPlan].price,
+                plan: selectedPlan,
+                description: planData[selectedPlan].name
             };
 
-            return await sendPaymentToBackend(paymentData);
-        }
+            console.log('🚀 Enviando dados para pagamento:', paymentData);
 
-        async function createPixPayment() {
-            const paymentData = {
-                payment_method_id: 'pix',
-                payer: {
-                    email: document.getElementById('email').value,
-                    first_name: document.getElementById('firstName').value,
-                    last_name: document.getElementById('lastName').value,
-                    identification: {
-                        type: 'CPF',
-                        number: document.getElementById('docNumber').value.replace(/\D/g, '')
-                    }
-                },
-                transaction_amount: planData[selectedPlan].price
-            };
-
-            return await sendPaymentToBackend(paymentData);
-        }
-
-        async function createTicketPayment() {
-            const paymentData = {
-                payment_method_id: 'bolbradesco',
-                payer: {
-                    email: document.getElementById('email').value,
-                    first_name: document.getElementById('firstName').value,
-                    last_name: document.getElementById('lastName').value,
-                    identification: {
-                        type: 'CPF',
-                        number: document.getElementById('docNumber').value.replace(/\D/g, '')
-                    }
-                },
-                transaction_amount: planData[selectedPlan].price
-            };
-
-            return await sendPaymentToBackend(paymentData);
-        }
-
-        async function sendPaymentToBackend(paymentData) {
             const response = await fetch('/api/process-payment', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    ...paymentData,
-                    plan: selectedPlan,
-                    description: planData[selectedPlan].name
-                })
+                body: JSON.stringify(paymentData)
             });
 
             if (!response.ok) {
-                throw new Error('Erro no servidor');
+                const errorData = await response.json();
+                console.error('❌ Erro do servidor:', errorData);
+                throw new Error(errorData.error || `Erro HTTP ${response.status}`);
             }
 
-            return await response.json();
+            const result = await response.json();
+            console.log('✅ Resposta do pagamento:', result);
+            return result;
         }
 
         function handlePaymentResponse(response) {
@@ -573,6 +486,19 @@ const mp = new MercadoPago('APP_USR-8de5b681-b88c-4a2b-9814-2961e8e10a51', {
 
         function showPixQRCode(response) {
             const successDiv = document.getElementById('successMessage');
+            
+            // Verificar se temos QR code válido
+            if (!response.qr_code) {
+                showError('Erro: QR Code não foi gerado. Tente novamente.');
+                return;
+            }
+
+            // Verificar se é PIX válido
+            if (!response.is_valid_pix) {
+                showError('Erro: QR Code inválido gerado. Contate o suporte.');
+                console.error('QR Code inválido:', response.qr_code.substring(0, 50));
+                return;
+            }
             
             // Gerar QR Code usando API externa
             const qrCodeURL = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(response.qr_code)}`;
@@ -601,7 +527,7 @@ const mp = new MercadoPago('APP_USR-8de5b681-b88c-4a2b-9814-2961e8e10a51', {
                 
                 <div id="pixTimer" style="margin: 1.5rem 0; padding: 1rem; background: #fff3cd; border: 2px solid #ffeaa7; border-radius: 10px; text-align: center;">
                     <p style="margin: 0; color: #856404; font-weight: bold; font-size: 16px;">
-                        ⏰ Tempo restante para pagamento: <span id="timeRemaining">10:00</span>
+                        ⏰ Tempo restante para pagamento: <span id="timeRemaining">30:00</span>
                     </p>
                 </div>
                 
@@ -621,7 +547,7 @@ const mp = new MercadoPago('APP_USR-8de5b681-b88c-4a2b-9814-2961e8e10a51', {
         }
 
         function startPixTimer() {
-            let timeLeft = 10 * 60; // 10 minutos em segundos
+            let timeLeft = 30 * 60; // 30 minutos em segundos
             const timerElement = document.getElementById('timeRemaining');
             
             const timer = setInterval(() => {
@@ -684,6 +610,8 @@ const mp = new MercadoPago('APP_USR-8de5b681-b88c-4a2b-9814-2961e8e10a51', {
             const errorDiv = document.getElementById('errorMessage');
             errorDiv.textContent = message;
             errorDiv.style.display = 'block';
+            
+            // Auto hide after 5 seconds
             setTimeout(() => {
                 errorDiv.style.display = 'none';
             }, 5000);
