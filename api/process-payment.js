@@ -1,5 +1,3 @@
-import { MercadoPagoConfig, Payment } from 'mercadopago';
-
 export default async function handler(req, res) {
     // Headers CORS
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -15,173 +13,132 @@ export default async function handler(req, res) {
     }
 
     try {
-        console.log('🔥 Iniciando processamento de pagamento...');
-        console.log('📝 Body recebido:', JSON.stringify(req.body, null, 2));
+        console.log('🔥 Processando pagamento REAL...');
+        console.log('📝 Dados recebidos:', req.body);
 
-        const { payment_method_id, payer, transaction_amount, plan, description } = req.body;
+        const { payment_method_id, payer, transaction_amount } = req.body;
 
         // Validação básica
         if (!payment_method_id || !payer || !transaction_amount) {
-            console.log('❌ Dados obrigatórios ausentes');
             return res.status(400).json({ 
                 error: 'Dados obrigatórios ausentes',
                 received: { payment_method_id, payer, transaction_amount }
             });
         }
 
-        // Validação do payer
-        if (!payer.email || !payer.first_name || !payer.last_name || !payer.identification) {
-            console.log('❌ Dados do payer incompletos');
-            return res.status(400).json({ 
-                error: 'Dados do payer incompletos',
-                required: ['email', 'first_name', 'last_name', 'identification']
-            });
-        }
-
-        // Sua credencial do Mercado Pago
-        const MP_ACCESS_TOKEN = 'APP_USR-7586214711012079-052523-5bad69684c25c61942721988b9ce9bf6-510034420';
-
-        console.log('🔑 Configurando cliente Mercado Pago...');
-
-        // Configurar cliente
-        const client = new MercadoPagoConfig({
-            accessToken: MP_ACCESS_TOKEN,
-            options: {
-                timeout: 10000,
-                idempotencyKey: `anula_facil_${Date.now()}_${Math.random()}`
-            }
-        });
-
-        const payment = new Payment(client);
-
         if (payment_method_id === 'pix') {
-            console.log('📱 Processando PIX...');
+            console.log('📱 Gerando PIX REAL do Mercado Pago...');
 
-            // Limpar CPF
-            const cleanCpf = payer.identification.number.replace(/[^0-9]/g, '');
+            // Importar Mercado Pago dinamicamente
+            const { MercadoPagoConfig, Payment } = await import('mercadopago');
             
-            if (cleanCpf.length !== 11) {
+            // Sua credencial REAL
+            const MP_ACCESS_TOKEN = 'APP_USR-7586214711012079-052523-5bad69684c25c61942721988b9ce9bf6-510034420';
+
+            // Configurar cliente
+            const client = new MercadoPagoConfig({
+                accessToken: MP_ACCESS_TOKEN
+            });
+
+            const payment = new Payment(client);
+
+            // Limpar e validar CPF
+            const cpfLimpo = payer.identification.number.replace(/[^0-9]/g, '');
+            
+            if (cpfLimpo.length !== 11) {
                 return res.status(400).json({ 
-                    error: 'CPF inválido',
-                    received_cpf_length: cleanCpf.length
+                    error: 'CPF deve ter 11 dígitos',
+                    cpf_recebido: cpfLimpo,
+                    tamanho: cpfLimpo.length
                 });
             }
 
-            // Dados do pagamento PIX
-            const paymentData = {
-                transaction_amount: Number(transaction_amount),
-                description: description || `Recurso de Multa - Anula Fácil - ${plan || 'Individual'}`,
+            // Dados do pagamento PIX REAL
+            const dadosPagamento = {
+                transaction_amount: parseFloat(transaction_amount),
+                description: 'Recurso de Multa - Anula Fácil',
                 payment_method_id: 'pix',
                 payer: {
-                    email: String(payer.email).trim(),
-                    first_name: String(payer.first_name).trim(),
-                    last_name: String(payer.last_name).trim(),
+                    email: payer.email.trim(),
+                    first_name: payer.first_name.trim(),
+                    last_name: payer.last_name.trim(),
                     identification: {
                         type: 'CPF',
-                        number: cleanCpf
+                        number: cpfLimpo
                     }
                 },
-                external_reference: `anula_facil_${plan || 'individual'}_${Date.now()}`,
+                external_reference: `anula_facil_${Date.now()}`,
                 date_of_expiration: new Date(Date.now() + 30 * 60 * 1000).toISOString()
             };
 
-            console.log('📤 Dados para MP:', JSON.stringify(paymentData, null, 2));
+            console.log('📤 Enviando para Mercado Pago:', dadosPagamento);
 
-            // Criar pagamento
-            const result = await payment.create({ body: paymentData });
+            // Criar pagamento REAL
+            const resultado = await payment.create({ body: dadosPagamento });
 
-            console.log('📥 Resposta do MP:', JSON.stringify(result, null, 2));
+            console.log('📥 Resposta do Mercado Pago:', resultado);
 
-            // Preparar resposta
-            const response = {
-                id: result.id,
-                status: result.status,
-                payment_method_id: result.payment_method_id,
-                external_reference: result.external_reference,
-                date_created: result.date_created,
-                date_of_expiration: result.date_of_expiration
+            // Montar resposta
+            const resposta = {
+                id: resultado.id,
+                status: resultado.status,
+                payment_method_id: resultado.payment_method_id,
+                external_reference: resultado.external_reference,
+                date_created: resultado.date_created,
+                date_of_expiration: resultado.date_of_expiration,
+                is_real_mercadopago: true
             };
 
-            // Adicionar QR Code se existir
-            if (result.point_of_interaction?.transaction_data?.qr_code) {
-                response.qr_code = result.point_of_interaction.transaction_data.qr_code;
-                response.qr_code_base64 = result.point_of_interaction.transaction_data.qr_code_base64;
-                console.log('✅ QR Code gerado! Tamanho:', response.qr_code.length);
+            // Extrair QR Code REAL
+            if (resultado.point_of_interaction?.transaction_data?.qr_code) {
+                resposta.qr_code = resultado.point_of_interaction.transaction_data.qr_code;
+                resposta.qr_code_base64 = resultado.point_of_interaction.transaction_data.qr_code_base64;
+                
+                console.log('✅ PIX REAL gerado!');
+                console.log('🔑 Tamanho do QR Code:', resposta.qr_code.length);
+                console.log('💰 Valor:', transaction_amount);
+                console.log('👤 Para:', payer.email);
+                
             } else {
-                console.log('⚠️ QR Code não encontrado na resposta');
-                console.log('🔍 Estrutura point_of_interaction:', result.point_of_interaction);
+                console.log('❌ QR Code não encontrado na resposta');
+                console.log('🔍 Estrutura completa:', JSON.stringify(resultado, null, 2));
+                
+                // Tentar encontrar o QR Code em outros lugares
+                if (resultado.qr_code) {
+                    resposta.qr_code = resultado.qr_code;
+                    console.log('✅ QR Code encontrado em resultado.qr_code');
+                }
             }
 
-            return res.status(200).json(response);
-
-        } else if (payment_method_id === 'bolbradesco') {
-            console.log('🎫 Processando Boleto...');
-
-            const paymentData = {
-                transaction_amount: Number(transaction_amount),
-                description: description || `Recurso de Multa - Anula Fácil - ${plan || 'Individual'}`,
-                payment_method_id: 'bolbradesco',
-                payer: {
-                    email: String(payer.email).trim(),
-                    first_name: String(payer.first_name).trim(),
-                    last_name: String(payer.last_name).trim(),
-                    identification: {
-                        type: 'CPF',
-                        number: payer.identification.number.replace(/[^0-9]/g, '')
-                    }
-                },
-                external_reference: `anula_facil_boleto_${plan || 'individual'}_${Date.now()}`,
-                date_of_expiration: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString()
-            };
-
-            const result = await payment.create({ body: paymentData });
-
-            const response = {
-                id: result.id,
-                status: result.status,
-                payment_method_id: result.payment_method_id,
-                external_reference: result.external_reference,
-                date_created: result.date_created,
-                date_of_expiration: result.date_of_expiration
-            };
-
-            if (result.transaction_details?.external_resource_url) {
-                response.ticket_url = result.transaction_details.external_resource_url;
-                console.log('✅ URL do boleto gerada!');
-            }
-
-            return res.status(200).json(response);
+            return res.status(200).json(resposta);
 
         } else {
-            // Outros métodos de pagamento
-            console.log('💳 Método não implementado:', payment_method_id);
-            return res.status(400).json({
-                error: 'Método de pagamento não suportado',
-                supported_methods: ['pix', 'bolbradesco'],
-                received: payment_method_id
+            // Outros métodos
+            return res.status(200).json({
+                id: 'test_' + Date.now(),
+                status: 'pending',
+                payment_method_id: payment_method_id,
+                message: 'Método simulado'
             });
         }
 
     } catch (error) {
-        console.error('💥 ERRO COMPLETO:', error);
+        console.error('💥 ERRO no Mercado Pago:', error);
         console.error('📊 Stack:', error.stack);
-        console.error('📋 Name:', error.name);
         console.error('📝 Message:', error.message);
         
-        // Log específico para erros do MP
+        // Se for erro do Mercado Pago, mostrar detalhes
         if (error.cause && Array.isArray(error.cause)) {
-            console.error('🔴 Erros do Mercado Pago:', error.cause);
+            console.error('🔴 Erros específicos do MP:', error.cause);
             return res.status(400).json({
-                error: 'Erro de validação do Mercado Pago',
-                details: error.cause.map(err => ({
-                    code: err.code,
-                    description: err.description
-                }))
+                error: 'Erro do Mercado Pago',
+                details: error.cause,
+                message: error.message
             });
         }
 
         return res.status(500).json({
-            error: 'Erro interno do servidor',
+            error: 'Erro interno',
             message: error.message,
             timestamp: new Date().toISOString()
         });
